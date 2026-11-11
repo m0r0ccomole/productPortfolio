@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Quotes from people you've worked with. Industry pages pick them by id.
+     <image> is optional; without it the card shows an initials placeholder.
+     These people are fictional. Only publish real quotes with permission. -->
+<testimonials-content>
+
+  <!-- Testimonials Section -->
+  <testimonials>
+    <testimonial id="dana-whitfield">
+      <quote>Riley walked into a room full of risk people with a spreadsheet and walked out with a yes. I still don't know how.</quote>
+      <name>Dana Whitfield</name>
+      <title>VP of Credit Risk</title>
+      <company>Harbor Street Financial</company>
+    </testimonial>
+    <testimonial id="marcus-ellery">
+      <quote>Riley never asked engineering to build something Riley couldn't explain down to the last edge case.</quote>
+      <name>Marcus Ellery</name>
+      <title>Engineering Manager</title>
+      <company>Brightwater Lending</company>
+    </testimonial>
+  </testimonials>
+
+</testimonials-content>

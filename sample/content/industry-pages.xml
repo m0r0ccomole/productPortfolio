@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Role-specific landing pages, served at /resume/{id}. Link one from each tailored resume.
+     Also holds the /hello email-signature page at the bottom.
+     <products-built> and <testimonials> are optional on every page.
+     Riley Carter is a fictional sample persona. Replace every value with your own. -->
+<industry-pages-content>
+
+  <!-- Industry Landing Pages -->
+  <page id="fintech">
+    <display-name>Fintech</display-name>
+    <hero>
+      <headline>Building Lending Products from Zero to $40M</headline>
+      <hook>I build financial products that grow the business and still leave customers better off.</hook>
+    </hero>
+
+    <relevance>
+      <statement>I've spent nine years in consumer lending and banking, from launching new loan brands to rebuilding the application that feeds them. At Harbor Street we lifted conversion 6% by fixing dozens of small problems we found in session replays, and cut third-party fraud 85% without adding friction for real applicants.</statement>
+    </relevance>
+
+    <featured-achievements>
+      <achievement>
+        <metric>$40M loan portfolio</metric>
+        <context>Launched and grew 3 lending brands at Brightwater</context>
+      </achievement>
+      <achievement>
+        <metric>85% fraud reduction</metric>
+        <context>With no measurable drop in completed applications</context>
+      </achievement>
+      <achievement>
+        <metric>6% conversion lift</metric>
+        <context>Through behavioral analytics and steady friction removal</context>
+      </achievement>
+    </featured-achievements>
+
+    <!-- Each <id> must match a <deep-dive id> in deep-dives.xml -->
+    <products-built>
+      <title>Some of the products I've built</title>
+      <products>
+        <product>
+          <id>kestrel-credit</id>
+          <name>Kestrel Credit</name>
+          <year>2018</year>
+          <metric>$25M+</metric>
+          <metric-label>Portfolio Created</metric-label>
+          <image>/sample/product-application.svg</image>
+          <image-alt>Placeholder for a loan application screenshot</image-alt>
+        </product>
+        <product>
+          <id>lumen-line</id>
+          <name>Lumen Line of Credit</name>
+          <year>2020</year>
+          <metric>12%</metric>
+          <metric-label>First-Year Portfolio Growth</metric-label>
+          <image>/sample/product-dashboard.svg</image>
+          <image-alt>Placeholder for an account dashboard screenshot</image-alt>
+        </product>
+      </products>
+    </products-built>
+
+    <!-- Each <id> must match a <testimonial id> in testimonials.xml -->
+    <testimonials>
+      <selected-ids>
+        <id>dana-whitfield</id>
+        <id>marcus-ellery</id>
+      </selected-ids>
+    </testimonials>
+
+    <relevant-skills>
+      <skill>Loan Origination</skill>
+      <skill>Payment Systems</skill>
+      <skill>Risk &amp; Compliance</skill>
+      <skill>Financial Modeling</skill>
+      <skill>Fraud Prevention</skill>
+      <skill>Behavioral Analytics</skill>
+      <skill>Customer Journey Optimization</skill>
+      <skill>Rapid Prototyping</skill>
+      <skill>Vendor Integration</skill>
+    </relevant-skills>
+  </page>
+
+  <page id="consumer-digital">
+    <display-name>Consumer Digital</display-name>
+    <hero>
+      <headline>Digital Experiences 400K+ People Use Every Month</headline>
+      <hook>Nobody opens a loan app for fun. They want to get it done and get back to their day.</hook>
+    </hero>
+
+    <relevance>
+      <statement>I led the customer-facing web and app experience for 400K+ monthly users across 5 brands. Most of the wins were small and unglamorous: a confusing field label, a slow vendor iFrame, a button that hid below the fold on older phones. Stacked up over a year, they added up to a 6% lift in conversion.</statement>
+    </relevance>
+
+    <featured-achievements>
+      <achievement>
+        <metric>400K+ monthly active users</metric>
+        <context>Owned digital servicing across 5 brands on a shared platform</context>
+      </achievement>
+      <achievement>
+        <metric>6% conversion lift</metric>
+        <context>From months of session replay review and targeted fixes</context>
+      </achievement>
+      <achievement>
+        <metric>2 patents</metric>
+        <context>For display interaction designs validated in field testing</context>
+      </achievement>
+    </featured-achievements>
+
+    <testimonials>
+      <selected-ids>
+        <id>dana-whitfield</id>
+      </selected-ids>
+    </testimonials>
+
+    <relevant-skills>
+      <skill>Conversion Optimization</skill>
+      <skill>Web Analytics</skill>
+      <skill>Session Replay Analysis</skill>
+      <skill>Mobile-First UX</skill>
+      <skill>A/B Testing</skill>
+      <skill>User Research</skill>
+      <skill>Multi-Brand Design Systems</skill>
+      <skill>Agile Product Development</skill>
+    </relevant-skills>
+  </page>
+
+  <page id="industrial-iot">
+    <display-name>Industrial IoT</display-name>
+    <hero>
+      <headline>From Boat Helms to Pump Stations: Interfaces That Can't Fail</headline>
+      <hook>I've designed screens for people wearing gloves in the rain.</hook>
+    </hero>
+
+    <relevance>
+      <statement>I spent seven years at Ironvale Machines building displays and controls for diesel engines. On a pump station or a boat helm, a confusing screen isn't an annoyance; it's downtime. We put far more engine data in front of operators than they'd ever had, earned 2 patents for the interaction design, and shipped the first web-based displays in the product line.</statement>
+    </relevance>
+
+    <featured-achievements>
+      <achievement>
+        <metric>6 products shipped</metric>
+        <context>Marine, pumping and power generation displays used in harsh conditions</context>
+      </achievement>
+      <achievement>
+        <metric>2 patents</metric>
+        <context>For operator interface designs proven in field trials</context>
+      </achievement>
+      <achievement>
+        <metric>First embedded web platform</metric>
+        <context>HTML and JavaScript interfaces running on the display hardware itself</context>
+      </achievement>
+    </featured-achievements>
+
+    <products-built>
+      <title>Industrial Products I've Built</title>
+      <products>
+        <product>
+          <id>harbor-helm</id>
+          <name>Helm Display</name>
+          <year>2014</year>
+          <metric>4 Boat Builders</metric>
+          <metric-label>Standard Equipment</metric-label>
+          <image>/sample/product-helm-display.svg</image>
+          <image-alt>Placeholder for a marine helm display</image-alt>
+        </product>
+        <product>
+          <id>pump-controller</id>
+          <name>Pump Station Controller</name>
+          <year>2015</year>
+          <metric>Minutes</metric>
+          <metric-label>To Diagnose, Down from Hours</metric-label>
+          <image>/sample/product-controller.svg</image>
+          <image-alt>Placeholder for a compact engine controller display</image-alt>
+        </product>
+      </products>
+    </products-built>
+
+    <testimonials>
+      <selected-ids>
+        <id>marcus-ellery</id>
+      </selected-ids>
+    </testimonials>
+
+    <relevant-skills>
+      <skill>Embedded Systems</skill>
+      <skill>CAN and Modbus Protocols</skill>
+      <skill>Industrial HMI Design</skill>
+      <skill>Hardware Integration</skill>
+      <skill>Field Testing &amp; Validation</skill>
+      <skill>Real-time Data Visualization</skill>
+      <skill>Rapid Prototyping</skill>
+      <skill>Safety-critical Systems</skill>
+    </relevant-skills>
+  </page>
+
+  <page id="platform">
+    <display-name>Platform Architecture</display-name>
+    <hero>
+      <headline>One Platform, Five Brands, Zero Copy-Paste</headline>
+      <hook>Every brand should feel like its own product. None of them should need its own codebase.</hook>
+    </hero>
+
+    <relevance>
+      <statement>I've owned product for a shared lending platform behind 5 consumer brands and 400K+ monthly users. Each brand has its own look, pricing and states. Underneath, they share one application flow, one servicing portal and one set of internal tools, which is what let us launch a new brand in a quarter instead of a year.</statement>
+    </relevance>
+
+    <featured-achievements>
+      <achievement>
+        <metric>5 brands, 1 platform</metric>
+        <context>Shared components with brand-level theming and configuration</context>
+      </achievement>
+      <achievement>
+        <metric>Login migration</metric>
+        <context>Moved every customer to a managed identity service with no downtime</context>
+      </achievement>
+      <achievement>
+        <metric>Vendor-agnostic services</metric>
+        <context>Swappable integrations so a vendor outage never took the application down</context>
+      </achievement>
+    </featured-achievements>
+
+    <relevant-skills>
+      <skill>Platform Strategy</skill>
+      <skill>API Design</skill>
+      <skill>Identity &amp; Authentication</skill>
+      <skill>Enterprise Integrations</skill>
+      <skill>Multi-tenant Architecture</skill>
+      <skill>DevOps Collaboration</skill>
+      <skill>Technical Documentation</skill>
+    </relevant-skills>
+  </page>
+
+  <!-- Email Signature Landing (/hello). Link it from your email signature as
+       /hello?name=FirstName to greet people by name. {firstName} is replaced. -->
+  <page id="hello">
+    <personalized-greeting>Hi {firstName}! Thanks for clicking through from my email.</personalized-greeting>
+    <generic-greeting>Hi there! Thanks for stopping by.</generic-greeting>
+
+    <intro>Short version: I spent seven years building engine displays that had to work in the rain, then moved into lending, where a confusing screen costs you a customer instead of a pump. These days I work on digital banking at Cobalt Bay Bank. Same rule everywhere: make it simple and people stick around.</intro>
+
+    <read-more-label>Read More →</read-more-label>
+
+    <email-context-hook>If you're wondering whether I can back up what I wrote in that email, here's the proof:</email-context-hook>
+
+    <quick-links>
+      <link-group title="Start Here">
+        <link href="/deep-dives/fraud-reduction">
+          <title>The 85% Fraud Story</title>
+          <context>Risk found the vendor. I figured out how to add it without losing applicants.</context>
+        </link>
+        <link href="/deep-dives/payoff-date">
+          <title>The Spreadsheet That Won the Argument</title>
+          <context>A loan model built to the penny, and a 1.5% drop in write-offs.</context>
+        </link>
+        <link href="/deep-dives/kestrel-credit">
+          <title>Zero to $25M in Two Years</title>
+          <context>My first brand launch, with no playbook to copy.</context>
+        </link>
+      </link-group>
+
+      <link-group title="Pick Your Track">
+        <link href="/resume/fintech">
+          <title>For Fintech Roles</title>
+          <context>Lending, fraud, payments and the people on the other end of them.</context>
+        </link>
+        <link href="/resume/industrial-iot">
+          <title>For Technical Products</title>
+          <context>Embedded systems, patents and screens built for gloves.</context>
+        </link>
+      </link-group>
+    </quick-links>
+
+    <closing-hook>
+      <text>You've got a full inbox, so I'll keep this short. If something here caught your eye, reply to my email or grab a slot on my calendar.</text>
+      <cta-text>Reply to My Email</cta-text>
+      <calendar-text>Or Grab 30 Minutes</calendar-text>
+      <email-subject>Following up from your website</email-subject>
+    </closing-hook>
+  </page>
+
+</industry-pages-content>

@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Case studies and product briefs, served at /deep-dives/{id}.
+     type="product-brief" lists the entry under "Products I've Built"; anything else is a case study.
+     listed="false" keeps a page reachable by direct link but hides it from /deep-dives.
+     <related-work> and <images> are optional.
+     Riley Carter is a fictional sample persona. Replace every value with your own. -->
+<deep-dives-content>
+
+  <!-- Case Studies -->
+  <deep-dive id="conversion-lift" listed="true">
+    <title>Lifting Conversion 6% by Sweating the Small Stuff</title>
+    <related-work>
+      <label>View All Case Studies</label>
+      <href>/deep-dives</href>
+    </related-work>
+
+    <context>
+      <company>Harbor Street Financial</company>
+      <timeframe>2023-2024</timeframe>
+      <role>Director of Product</role>
+      <stakes>Application completion on our largest brand had slid 8% over two quarters, and nobody could point to a release that caused it.</stakes>
+    </context>
+
+    <problem>
+      <summary>Completion rates were falling slowly, with no single cause we could see in our dashboards.</summary>
+      <details>
+        <detail>A few sharp drops, plus a slow leak in between</detail>
+        <detail>No deployment lined up with the losses</detail>
+        <detail>Page-level analytics showed where people left, not why</detail>
+      </details>
+    </problem>
+
+    <process>
+      <phase name="Discovery">
+        <step>Watched hundreds of session replays from abandoned applications</step>
+        <step>Added detailed client-side logging with engineering to see errors users never reported</step>
+        <step>Reviewed every change shipped in the prior six months</step>
+      </phase>
+      <phase name="Hypothesis">
+        <step>Narrowed it to three suspects: bank account linking, a new vendor card form, and phone verification</step>
+        <step>Ranked them by how many applicants each touched and how hard each was to fix</step>
+      </phase>
+      <phase name="Execution">
+        <step>Found the vendor card form, embedded in an iFrame, silently failing on older phones, and added a fallback path</step>
+        <step>Fixed dozens of smaller issues the new logging surfaced</step>
+        <step>Kept a weekly replay review going after the numbers recovered</step>
+      </phase>
+    </process>
+
+    <results>
+      <metric>
+        <value>6%</value>
+        <label>Overall conversion lift</label>
+      </metric>
+      <metric>
+        <value>40+</value>
+        <label>Small friction fixes shipped</label>
+      </metric>
+    </results>
+  </deep-dive>
+
+  <deep-dive id="fraud-reduction" listed="true">
+    <title>Cutting Third-Party Fraud 85% Without Losing Applicants</title>
+    <related-work>
+      <label>View Fintech Experience</label>
+      <href>/resume/fintech</href>
+    </related-work>
+
+    <context>
+      <company>Harbor Street Financial</company>
+      <timeframe>2022</timeframe>
+      <role>Director of Product</role>
+      <stakes>Fraud rings using stolen identities were costing us millions a year, and every fraud tool we'd tried before had hurt conversion.</stakes>
+    </context>
+
+    <problem>
+      <summary>Stolen personal data made fraudulent applications look identical to real ones, and instant decisions gave us seconds to tell them apart.</summary>
+      <details>
+        <detail>Fraud losses well above our risk tolerance</detail>
+        <detail>Stolen data meant identity checks on name and SSN alone were useless</detail>
+        <detail>Decisions still had to be instant and fair-lending compliant</detail>
+      </details>
+    </problem>
+
+    <process>
+      <phase name="Collaboration">
+        <step>Risk brought us a document and selfie verification vendor</step>
+        <step>We pulled device data (80% of applicants were on phones) and brought compliance in early</step>
+      </phase>
+      <phase name="Design and Build">
+        <step>Placed verification only where the risk model flagged an application</step>
+        <step>Built a hand-off so desktop applicants could finish the check on their phone</step>
+        <step>Added an escape path so real customers were never stuck</step>
+      </phase>
+      <phase name="Rollout">
+        <step>Tested copy and step order to raise completion of the check</step>
+        <step>Tracked fraud and conversion side by side every week</step>
+      </phase>
+    </process>
+
+    <results>
+      <metric>
+        <value>85%</value>
+        <label>Reduction in third-party fraud</label>
+      </metric>
+      <metric>
+        <value>No measurable</value>
+        <label>Drop in completed applications</label>
+      </metric>
+      <metric>
+        <value>88%</value>
+        <label>Completion rate for the new check</label>
+      </metric>
+    </results>
+  </deep-dive>
+
+  <deep-dive id="payoff-date" listed="true">
+    <title>Lowering Write-offs 1.5% by Giving Borrowers a Payoff Date</title>
+    <related-work>
+      <label>View Fintech Experience</label>
+      <href>/resume/fintech</href>
+    </related-work>
+
+    <context>
+      <company>Brightwater Lending</company>
+      <timeframe>2020-2021</timeframe>
+      <role>Product Manager</role>
+      <stakes>Our new line of credit was growing fast, but customers kept calling to ask the same question: when will this be paid off?</stakes>
+    </context>
+
+    <problem>
+      <summary>Minimum payments on a revolving line gave customers no end date, and the uncertainty was showing up in support calls and late payments.</summary>
+      <details>
+        <detail>Customers couldn't tell when they'd be debt-free</detail>
+        <detail>Card issuers were already offering fixed payment plans</detail>
+        <detail>Finance worried faster payoff would shrink the portfolio</detail>
+      </details>
+    </problem>
+
+    <process>
+      <phase name="Research">
+        <step>Tagged a quarter of support calls to size the payoff question</step>
+        <step>Reviewed how card issuers presented fixed payment plans</step>
+      </phase>
+      <phase name="Modeling">
+        <step>Rebuilt the line of credit math in a spreadsheet, accurate to the penny</step>
+        <step>Simulated each customer's balance forward under several payment plans</step>
+        <step>Found a large share of customers headed for delinquency, and that a fixed payment kept many of them current</step>
+      </phase>
+      <phase name="Build and Launch">
+        <step>Designed a payment choice screen that showed the payoff date and total interest saved</step>
+        <step>Handed engineering the spreadsheet as the test oracle for the new calculation</step>
+        <step>Piloted in two states before rolling out everywhere</step>
+      </phase>
+    </process>
+
+    <results>
+      <metric>
+        <value>1.5%</value>
+        <label>Reduction in write-offs</label>
+      </metric>
+      <metric>
+        <value>30%</value>
+        <label>Of customers chose a fixed plan</label>
+      </metric>
+      <metric>
+        <value>Near zero</value>
+        <label>"When will I be paid off?" calls</label>
+      </metric>
+    </results>
+
+    <images>
+      <image src="/sample/case-model.svg" alt="Placeholder for a spreadsheet loan model" caption="The spreadsheet model that matched the production loan engine to the penny" />
+      <image src="/sample/product-dashboard.svg" alt="Placeholder for a payment choice screen" caption="Payment options showing a payoff date for each plan" />
+    </images>
+  </deep-dive>
+
+  <deep-dive id="field-displays" listed="true">
+    <title>Building Connected Equipment Before It Had a Name</title>
+    <related-work>
+      <label>View Industrial Experience</label>
+      <href>/resume/industrial-iot</href>
+    </related-work>
+
+    <context>
+      <company>Ironvale Machines</company>
+      <timeframe>2009-2016</timeframe>
+      <role>Controls &amp; Display Engineer</role>
+      <stakes>Operators found out about engine problems when the engine shut down. On a remote pump station, that meant a day of lost output and a long drive.</stakes>
+    </context>
+
+    <problem>
+      <summary>Our displays showed a warning lamp and a few gauges. Operators needed to see trouble coming.</summary>
+      <details>
+        <detail>Small screens with almost no diagnostic data</detail>
+        <detail>No way to check on equipment without driving out to it</detail>
+        <detail>Web technology was unproven on rugged embedded hardware</detail>
+      </details>
+    </problem>
+
+    <process>
+      <phase name="Field Research">
+        <step>Installed prototypes on working sites and watched operators use them</step>
+        <step>Rode along with service technicians on breakdown calls</step>
+      </phase>
+      <phase name="Bigger Screens">
+        <step>Designed larger displays with trends so operators could spot drift early</step>
+        <step>Made every control usable with gloves and in direct sun</step>
+      </phase>
+      <phase name="Embedded Web">
+        <step>Ran a web server on the display so the same screens worked remotely</step>
+        <step>Bridged engine data onto plant networks with standard industrial protocols</step>
+      </phase>
+    </process>
+
+    <results>
+      <metric>
+        <value>6 products</value>
+        <label>Shipped across 3 markets</label>
+      </metric>
+      <metric>
+        <value>2 patents</value>
+        <label>For operator interface designs</label>
+      </metric>
+      <metric>
+        <value>First</value>
+        <label>Web-based display in the product line</label>
+      </metric>
+    </results>
+
+    <images>
+      <image src="/sample/product-helm-display.svg" alt="Placeholder for a large engine display" caption="Larger displays put trends in front of operators for the first time" />
+    </images>
+  </deep-dive>
+
+  <!-- Unlisted: reachable at /deep-dives/login-migration but hidden from the index -->
+  <deep-dive id="login-migration" listed="false">
+    <title>Moving 400K Customers to a New Login Without Anyone Noticing</title>
+
+    <context>
+      <company>Harbor Street Financial</company>
+      <timeframe>2024</timeframe>
+      <role>Director of Product</role>
+      <stakes>Our homegrown login system was our top support driver and a security liability, but customers needed uninterrupted access to their accounts.</stakes>
+    </context>
+
+    <problem>
+      <summary>The old login couldn't support modern multi-factor options, and every outage hit every brand at once.</summary>
+      <details>
+        <detail>Sign-in trouble was the number one reason customers called</detail>
+        <detail>Text-message codes failed often with some carriers</detail>
+      </details>
+    </problem>
+
+    <process>
+      <phase name="Planning">
+        <step>Mapped every place a customer signs in or resets a password</step>
+        <step>Designed a parallel run so either system could serve any customer</step>
+      </phase>
+      <phase name="Migration">
+        <step>Moved employee accounts first, then the smallest brand</step>
+        <step>Migrated customers silently at their next successful sign-in</step>
+      </phase>
+    </process>
+
+    <results>
+      <metric>
+        <value>Zero</value>
+        <label>Downtime during migration</label>
+      </metric>
+      <metric>
+        <value>35%</value>
+        <label>Fewer sign-in support calls</label>
+      </metric>
+    </results>
+  </deep-dive>
+
+  <!-- Product Briefs -->
+  <deep-dive id="kestrel-credit" type="product-brief" listed="true">
+    <title>Kestrel Credit: Launching a $25M Lending Brand</title>
+    <related-work>
+      <label>View Fintech Experience</label>
+      <href>/resume/fintech</href>
+    </related-work>
+
+    <context>
+      <company>Brightwater Lending</company>
+      <timeframe>2017-2019</timeframe>
+      <role>Product Manager</role>
+      <stakes>Our flagship brand had saturated its market. Growth had to come from customers we weren't reaching yet.</stakes>
+    </context>
+
+    <problem>
+      <summary>Borrowers with fair credit were stuck between banks that turned them down and lenders that overcharged them.</summary>
+      <details>
+        <detail>A real gap between prime lenders and high-cost options</detail>
+        <detail>No brand recognition in that segment</detail>
+      </details>
+    </problem>
+
+    <process>
+      <phase name="Discovery">
+        <step>Interviewed borrowers about what they disliked in their last loan</step>
+        <step>Positioned the brand around progress, not just approval</step>
+      </phase>
+      <phase name="Build">
+        <step>Reused the shared platform to cut time to market</step>
+        <step>Shortened the application for a credit tier that expects less paperwork</step>
+      </phase>
+      <phase name="Launch">
+        <step>Rolled out state by state, simplest regulation first</step>
+        <step>Tuned underwriting on early repayment data</step>
+      </phase>
+    </process>
+
+    <results>
+      <metric>
+        <value>$25M+</value>
+        <label>Portfolio in two years</label>
+      </metric>
+      <metric>
+        <value>8 months</value>
+        <label>From concept to first loan</label>
+      </metric>
+      <metric>
+        <value>Lesson learned</value>
+        <label>Don't launch invite-only. It added little and became tech debt the day we opened up.</label>
+      </metric>
+    </results>
+
+    <images>
+      <image src="/sample/product-application.svg" alt="Placeholder for a loan application screen" caption="A short pre-qualification form built for fair-credit borrowers" />
+    </images>
+  </deep-dive>
+
+  <deep-dive id="lumen-line" type="product-brief" listed="true">
+    <title>Lumen: Turning an Installment Loan into a Line of Credit</title>
+
+    <context>
+      <company>Brightwater Lending</company>
+      <timeframe>2020-2021</timeframe>
+      <role>Product Manager</role>
+      <stakes>Our installment loan was flat. A line of credit could lower payments and let customers borrow again without reapplying.</stakes>
+    </context>
+
+    <problem>
+      <summary>Customers had to reapply every time they needed more money, and the payments were higher than they needed to be.</summary>
+      <details>
+        <detail>Repeat customers went through a full application each time</detail>
+        <detail>A line of credit would lower the typical payment</detail>
+      </details>
+    </problem>
+
+    <process>
+      <phase name="Product">
+        <step>Extended the loan system to support revolving balances</step>
+        <step>Built a conversion journey for existing installment customers</step>
+      </phase>
+      <phase name="Servicing">
+        <step>Redesigned the account dashboard around available credit</step>
+        <step>Added a fixed payment option after customers asked for an end date</step>
+      </phase>
+    </process>
+
+    <results>
+      <metric>
+        <value>12%</value>
+        <label>Portfolio growth in the first year</label>
+      </metric>
+      <metric>
+        <value>Lower</value>
+        <label>Typical monthly payment than the old loan</label>
+      </metric>
+    </results>
+
+    <images>
+      <image src="/sample/product-dashboard.svg" alt="Placeholder for a line of credit dashboard" caption="Account dashboard built around available credit" />
+    </images>
+  </deep-dive>
+
+  <deep-dive id="harbor-helm" type="product-brief" listed="true">
+    <title>Helm Display: A Glass Cockpit for Recreational Boats</title>
+
+    <context>
+      <company>Ironvale Machines</company>
+      <timeframe>2013-2015</timeframe>
+      <role>Controls &amp; Display Engineer</role>
+      <stakes>Boat builders wanted the glass-cockpit look of modern aircraft. Our display was a decade old.</stakes>
+    </context>
+
+    <problem>
+      <summary>The old display showed a few numbers and a warning lamp, and it couldn't keep up with new engine features.</summary>
+      <details>
+        <detail>No support for newer multi-engine controls</detail>
+        <detail>Alarms were a light with no explanation</detail>
+      </details>
+    </problem>
+
+    <process>
+      <phase name="Discovery">
+        <step>Spent days aboard boats with captains and builders</step>
+      </phase>
+      <phase name="Design">
+        <step>Built configurable multi-engine views that scaled across screen sizes</step>
+        <step>Added night and day modes for the bridge</step>
+        <step>Replaced alarm lamps with plain-language messages</step>
+      </phase>
+    </process>
+
+    <results>
+      <metric>
+        <value>4 builders</value>
+        <label>Made it standard equipment</label>
+      </metric>
+      <metric>
+        <value>One codebase</value>
+        <label>For every display size</label>
+      </metric>
+    </results>
+
+    <images>
+      <image src="/sample/product-helm-display.svg" alt="Placeholder for a marine helm display" caption="Multi-engine helm view with day and night modes" />
+    </images>
+  </deep-dive>
+
+  <deep-dive id="pump-controller" type="product-brief" listed="true">
+    <title>Pump Station Controller: Simple Controls for Remote Sites</title>
+
+    <context>
+      <company>Ironvale Machines</company>
+      <timeframe>2014-2016</timeframe>
+      <role>Controls &amp; Display Engineer</role>
+      <stakes>Farm and municipal customers ran single engines on remote pumps, with a tight budget for controls.</stakes>
+    </context>
+
+    <problem>
+      <summary>The available controls were either too basic to diagnose anything or too expensive for a single pump.</summary>
+      <details>
+        <detail>Three gauges and a start button, with no fault information</detail>
+        <detail>Every fault meant a technician visit</detail>
+      </details>
+    </problem>
+
+    <process>
+      <phase name="Simplify">
+        <step>Stripped a multi-engine platform down to what one pump needs</step>
+        <step>Moved control logic into the display to lower hardware cost</step>
+      </phase>
+      <phase name="Ship">
+        <step>Wrote plain-English fault messages in place of blink codes</step>
+        <step>Kept the embedded web server so sites could be checked remotely</step>
+      </phase>
+    </process>
+
+    <results>
+      <metric>
+        <value>Minutes</value>
+        <label>To diagnose a fault, down from hours</label>
+      </metric>
+      <metric>
+        <value>On target</value>
+        <label>Hardware cost for single-engine sites</label>
+      </metric>
+    </results>
+
+    <images>
+      <image src="/sample/product-controller.svg" alt="Placeholder for a compact controller display" caption="A small display with plain-language fault messages" />
+    </images>
+  </deep-dive>
+
+</deep-dives-content>

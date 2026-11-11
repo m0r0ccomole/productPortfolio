@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Compact controller placeholder">
+  <rect width="800" height="600" fill="#eeeef2"/>
+  <rect x="200" y="80" width="400" height="440" rx="28" fill="#35384a"/>
+  <rect x="240" y="120" width="320" height="220" rx="12" fill="#0d283c"/>
+  <rect x="270" y="150" width="160" height="16" rx="4" fill="#5a9bc8"/>
+  <rect x="270" y="190" width="260" height="12" rx="3" fill="#86b7da"/>
+  <rect x="270" y="215" width="220" height="12" rx="3" fill="#86b7da"/>
+  <rect x="270" y="270" width="120" height="40" rx="6" fill="#c89b66"/>
+  <circle cx="290" cy="420" r="34" fill="#5a9bc8"/>
+  <circle cx="400" cy="420" r="34" fill="#9a8c98"/>
+  <circle cx="510" cy="420" r="34" fill="#c0392b"/>
+</svg>

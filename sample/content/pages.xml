@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copy for the home, about, projects, blog index, work index, 404 and privacy pages.
+     Riley Carter is a fictional sample persona. Replace every value with your own. -->
+<pages-content>
+
+  <!-- Generic Landing Page -->
+  <page id="home">
+    <hero>
+      <headline>Product Leader Who Ships: $40M+ Portfolios, 400K+ Users, 11 Years</headline>
+      <subheading>From embedded engine displays to consumer lending to digital banking at Cobalt Bay Bank</subheading>
+    </hero>
+
+    <metrics-summary>
+      <metric>
+        <value>$40M+</value>
+        <label>Loan Portfolio Built</label>
+      </metric>
+      <metric>
+        <value>400K+</value>
+        <label>Monthly Active Users</label>
+      </metric>
+      <metric>
+        <value>85%</value>
+        <label>Fraud Reduction</label>
+      </metric>
+      <metric>
+        <value>6%</value>
+        <label>Conversion Lift</label>
+      </metric>
+    </metrics-summary>
+
+    <metrics-heading>Impact by the Numbers</metrics-heading>
+
+    <!-- Each href points at a <deep-dive id> in deep-dives.xml -->
+    <featured-studies-heading>Featured Case Studies</featured-studies-heading>
+    <featured-case-studies>
+      <case-study>
+        <title>Cutting Fraud 85%</title>
+        <description>How a new verification step stopped third-party fraud without costing us applicants.</description>
+        <href>/deep-dives/fraud-reduction</href>
+        <button-label>Read Case Study</button-label>
+      </case-study>
+      <case-study>
+        <title>Giving Borrowers a Payoff Date</title>
+        <description>How a fixed payment option lowered write-offs 1.5% on a line of credit.</description>
+        <href>/deep-dives/payoff-date</href>
+        <button-label>Read Case Study</button-label>
+      </case-study>
+    </featured-case-studies>
+
+    <!-- Each id matches a <page id> in industry-pages.xml -->
+    <industries-heading>Industry Expertise</industries-heading>
+    <featured-industries>
+      <id>fintech</id>
+      <id>consumer-digital</id>
+      <id>industrial-iot</id>
+      <id>platform</id>
+    </featured-industries>
+  </page>
+
+  <!-- About Page -->
+  <page id="about">
+    <timeline-heading>My Journey</timeline-heading>
+    <intro>
+      <greeting>I'm Riley, and I like taking things apart to see how they work.</greeting>
+      <summary>I started out writing firmware for engine displays and ended up running product for lending platforms. The jobs look different on paper. The habit is the same: find out where people get stuck, then fix that first.</summary>
+    </intro>
+
+    <hero-image>/sample/hero.svg</hero-image>
+    <hero-image-alt>Illustrated placeholder for a hero photo</hero-image-alt>
+
+    <!-- url on <company> is optional and turns the name into a link -->
+    <timeline-data>
+      <event>
+        <year>2009</year>
+        <company>Lakeshore Technical University</company>
+        <role>Undergraduate Researcher</role>
+        <highlight>Published a paper on low-cost motor control</highlight>
+      </event>
+      <event>
+        <year>2009-2016</year>
+        <company url="https://example.com">Ironvale Machines</company>
+        <role>Controls &amp; Display Engineer</role>
+        <highlight>2 patents, first web-based displays in the engine line</highlight>
+      </event>
+      <event>
+        <year>2016</year>
+        <company url="https://example.com">Brightwater Lending</company>
+        <role>Product Manager</role>
+        <highlight>Launched 3 lending brands, $40M portfolio</highlight>
+      </event>
+      <event>
+        <year>2021</year>
+        <company url="https://example.com">Harbor Street Financial</company>
+        <role>Director of Product</role>
+        <highlight>Led platforms serving 400K+ users a month</highlight>
+      </event>
+      <event>
+        <year>2025</year>
+        <company url="https://example.com">Cobalt Bay Bank</company>
+        <role>Senior Product Manager, Digital Banking</role>
+        <highlight>Account opening and onboarding for a regional bank</highlight>
+      </event>
+      <event>
+        <year>Next</year>
+        <company>Your Company?</company>
+        <role>Product Leadership</role>
+        <highlight>Let's build something great together</highlight>
+      </event>
+    </timeline-data>
+
+    <personal>
+      <section title="My Approach">
+        <p>I start with what customers are already telling us. Funnel reports, support tickets, session replays. Most weeks the answer is sitting in one of them.</p>
+        <p>Then I do the math myself. If a change touches how a loan is priced or paid, I'll model it in a spreadsheet until engineering has something concrete to build from.</p>
+        <p>When risk or finance pushes back, I restate the objection in their terms and go find the number that answers it.</p>
+      </section>
+
+      <section title="Beyond Work">
+        <p>I live in a small lake town with my partner and a dog who has opinions about the mail carrier.</p>
+        <p>Outside work I tinker: home automation, an old sailboat that always needs something, and whatever side project I've talked myself into this month.</p>
+      </section>
+    </personal>
+  </page>
+
+  <!-- Projects Page -->
+  <page id="projects">
+    <project-labels>
+      <tech-stack>Tech Stack</tech-stack>
+      <key-features>Key Features</key-features>
+      <retired>Retired</retired>
+      <post-mortem>Post-mortem</post-mortem>
+    </project-labels>
+    <closing-cta>
+      <heading>Want to Build Something Together?</heading>
+      <primary-button href="/about">Learn More About Me</primary-button>
+    </closing-cta>
+    <intro>
+      <title>Side Projects &amp; Experiments</title>
+      <description>Things I build on weekends. What's still running is first. Further down is what I've retired, and why.</description>
+    </intro>
+
+    <project id="portfolio-site">
+      <title>This Portfolio Site</title>
+      <description>The site you're looking at. All of the copy lives in XML and markdown, so updating it never means touching code.</description>
+      <tech-stack>
+        <tech>Next.js</tech>
+        <tech>Tailwind CSS</tech>
+        <tech>Motion</tech>
+      </tech-stack>
+      <highlights>
+        <highlight>Role-specific landing pages for each industry</highlight>
+        <highlight>Personalized greeting for visitors arriving from email</highlight>
+        <highlight>Content separated from code</highlight>
+      </highlights>
+    </project>
+
+    <project id="boat-monitor">
+      <title>Sailboat Monitor</title>
+      <description>A small board on my boat reports battery voltage and bilge pump runs to my phone, so I find out about a leak before the boat does.</description>
+      <tech-stack>
+        <tech>Raspberry Pi</tech>
+        <tech>Python</tech>
+        <tech>MQTT</tech>
+      </tech-stack>
+      <highlights>
+        <highlight>Runs all season on a solar panel</highlight>
+        <highlight>Texts me when the bilge pump runs more than twice an hour</highlight>
+      </highlights>
+    </project>
+
+    <!-- Retired projects: things you've abandoned, each with a post-mortem.
+         <retired> is optional (e.g. August 2025). <tech-stack> and <highlights> are optional.
+         <post-mortem> takes one or more <p>. -->
+    <retired-projects>
+      <heading>Retired Projects</heading>
+      <project id="grocery-tracker">
+        <title>Grocery Price Tracker</title>
+        <description>A scraper that watched prices at three local stores and told me where to shop each week.</description>
+        <tech-stack>
+          <tech>Python</tech>
+          <tech>SQLite</tech>
+        </tech-stack>
+        <retired>March 2025</retired>
+        <post-mortem>
+          <p>The stores changed their sites every few weeks, and I spent more time fixing the scraper than I saved at the register.</p>
+        </post-mortem>
+      </project>
+    </retired-projects>
+  </page>
+
+  <!-- Blog index (/blog) -->
+  <page id="blog">
+    <labels>
+      <label key="heading">Blog</label>
+      <label key="intro">AI prompts, product notes and the longer version of things I post elsewhere. Take the templates and use them.</label>
+      <label key="empty">No blog posts available yet. Check back soon!</label>
+      <label key="footer-note">Most readers arrive here from a direct link. Looking for my portfolio work?</label>
+      <label key="footer-link">Visit the main site</label>
+    </labels>
+  </page>
+
+  <!-- Work & Impact index (/deep-dives) -->
+  <page id="deep-dives">
+    <labels>
+      <label key="heading">Work &amp; Impact</label>
+      <label key="intro">Products I've built and the hard problems behind them. Real problems, real tradeoffs, real results.</label>
+      <label key="products-heading">Products I've Built</label>
+      <label key="product-button">View Product Brief</label>
+      <label key="case-studies-heading">Deep Dive Case Studies</label>
+      <label key="case-study-button">Read Case Study</label>
+      <label key="back-button">Back to Home</label>
+    </labels>
+  </page>
+
+  <!-- 404 page -->
+  <page id="not-found">
+    <not-found>
+      <heading>Page Not Found</heading>
+      <message>This page doesn't exist, but plenty of others do. Let me point you somewhere useful.</message>
+      <primary-button>Go Home</primary-button>
+      <secondary-button>About Me</secondary-button>
+    </not-found>
+  </page>
+
+  <!-- Privacy Policy -->
+  <page id="privacy">
+    <title>Privacy Policy</title>
+    <content>
+      <section>
+        <h2>Information Collection</h2>
+        <p>This site uses basic analytics to understand how visitors use it. That covers page views, time on site and referral sources. No personal information is collected or stored.</p>
+      </section>
+
+      <section>
+        <h2>Cookies</h2>
+        <p>This site uses minimal cookies for analytics and to remember your preferences. No third-party advertising cookies are used.</p>
+      </section>
+
+      <section>
+        <h2>Contact</h2>
+        <p>Questions about privacy? Email me at riley@example.com</p>
+      </section>
+    </content>
+  </page>
+
+</pages-content>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Site-wide values: your name, contact details, navigation, SEO defaults and shared button copy.
+     Riley Carter is a fictional sample persona. Replace every value with your own. -->
+<global-elements>
+
+  <!-- Global Elements -->
+  <global>
+    <site-title>Riley Carter | Product Leadership</site-title>
+    <tagline>Engineer by training. Product leader by choice.</tagline>
+    <owner-name>Riley Carter</owner-name>
+    <!-- Your live URL, no trailing slash. The SITE_URL env var overrides it. -->
+    <site-url>https://example.com</site-url>
+    <contact-email>riley@example.com</contact-email>
+    <!-- Optional. Remove this line to hide the "grab time on my calendar" button. -->
+    <scheduling-url>https://cal.example.com/riley-carter/30min</scheduling-url>
+    <!-- Optional footer link back to the template. Keep it if you'd like to say thanks; remove it to hide. -->
+    <credit href="https://github.com/m0r0ccomole/productPortfolio">Built with productPortfolio</credit>
+
+    <navigation>
+      <item href="/">Home</item>
+      <item href="/deep-dives">Work &amp; Impact</item>
+      <item href="/about">About</item>
+      <item href="/projects">Projects</item>
+      <item href="/blog">Blog</item>
+    </navigation>
+
+    <buttons>
+      <cta-primary>View My Work</cta-primary>
+      <cta-secondary>Let's Connect</cta-secondary>
+      <cta-email>Get in Touch</cta-email>
+    </buttons>
+
+    <!-- Paths are relative to /public. Put your own images in /public/images/. -->
+    <global-images>
+      <headshot>/sample/headshot.svg</headshot>
+      <headshot-alt>Riley Carter headshot placeholder</headshot-alt>
+      <favicon>/sample/favicon.svg</favicon>
+      <!-- Optional social share image. Use a 1200x630 PNG or JPG; most networks ignore SVG.
+      <og-image>/images/og-image.png</og-image>
+      -->
+    </global-images>
+
+    <seo>
+      <default-description>Product leader with 11 years building lending, banking and industrial products, from embedded displays to platforms serving 400K+ people a month.</default-description>
+      <default-keywords>product management, product leader, fintech, lending, IoT, UX, portfolio</default-keywords>
+      <page id="about">
+        <title>About Riley Carter | Product Leadership Journey</title>
+        <description>Riley Carter's path from controls engineer to product leader across industrial equipment, consumer lending and banking.</description>
+      </page>
+      <page id="projects">
+        <title>Projects | Riley Carter</title>
+        <description>Side projects and experiments, including the ones that didn't make it.</description>
+      </page>
+      <page id="hello">
+        <title>Hello | Riley Carter</title>
+        <description>A quick tour of Riley Carter's product work.</description>
+      </page>
+      <page id="privacy">
+        <title>Privacy Policy | Riley Carter</title>
+        <description>Privacy policy for Riley Carter's portfolio site, including analytics and cookies.</description>
+      </page>
+      <page id="blog">
+        <title>Blog | Riley Carter</title>
+        <description>AI prompts, product notes and long-form posts.</description>
+      </page>
+    </seo>
+
+    <cta-content>
+      <heading>Ready to work together?</heading>
+      <subheading>Let's talk about the product problem you're trying to solve.</subheading>
+      <email-subjects>
+        <deep-dive>Discussion: Case Study</deep-dive>
+        <industry>Product Leadership Discussion</industry>
+        <general>Let's Connect</general>
+      </email-subjects>
+      <primary-buttons>
+        <general>Get in Touch</general>
+        <deep-dive>Let's Discuss This Project</deep-dive>
+        <industry>Discuss Opportunities</industry>
+        <product-brief>Let's Build Something Together</product-brief>
+      </primary-buttons>
+      <secondary-buttons>
+        <view-work>View Related Work</view-work>
+        <view-case-studies>View more of my work</view-case-studies>
+        <view-projects>View All Projects</view-projects>
+      </secondary-buttons>
+    </cta-content>
+  </global>
+
+</global-elements>

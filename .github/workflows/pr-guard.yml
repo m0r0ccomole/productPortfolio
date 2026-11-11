@@ -1,0 +1,30 @@
+# Runs only on the upstream repo. Fails any pull request that touches a site
+# owner's personal files, so nobody's content leaks upstream by accident.
+name: PR guard
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  no-personal-content:
+    if: github.repository == 'm0r0ccomole/productPortfolio'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reject changes to content/ and public/images/
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          blocked=$(git diff --name-only "$BASE_SHA"..."$HEAD_SHA" -- content public/images)
+          if [ -n "$blocked" ]; then
+            echo "::error::This PR changes site-owner files, which never belong upstream:"
+            echo "$blocked"
+            echo "Branch from upstream/main and include only code, docs or sample/ changes."
+            exit 1
+          fi

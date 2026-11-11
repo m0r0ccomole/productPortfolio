@@ -1,0 +1,128 @@
+# Pulls updates from the upstream template into your copy as a pull request.
+# Runs weekly and on demand (Actions tab → Sync upstream → Run workflow).
+#
+# Setup (once): Settings → Actions → General → Workflow permissions →
+# enable "Allow GitHub Actions to create and approve pull requests".
+#
+# Optional:
+# - Repo variable UPSTREAM_REPO (owner/name) to sync from a different upstream.
+# - Repo secret SYNC_TOKEN, a fine-grained token with Contents, Pull requests and
+#   Workflows write access. Without it, updates that change files in
+#   .github/workflows/ can't be pushed, and you get an issue with manual steps.
+name: Sync upstream
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  sync:
+    if: github.repository != 'm0r0ccomole/productPortfolio'
+    runs-on: ubuntu-latest
+    env:
+      UPSTREAM: ${{ vars.UPSTREAM_REPO || 'm0r0ccomole/productPortfolio' }}
+      GH_TOKEN: ${{ secrets.SYNC_TOKEN || github.token }}
+      BRANCH: upstream-sync
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.SYNC_TOKEN || github.token }}
+
+      - name: Fetch upstream
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote add upstream "https://github.com/$UPSTREAM.git"
+          git fetch upstream main
+
+      - name: Merge into the sync branch
+        id: merge
+        run: |
+          if git merge-base --is-ancestor upstream/main HEAD; then
+            echo "Already up to date with $UPSTREAM."
+            echo "status=current" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # True when the file in HEAD matches some version upstream has had,
+          # i.e. the site owner never edited it.
+          unchanged_from_upstream() {
+            local ours c
+            ours=$(git rev-parse -q --verify "HEAD:$1") || return 1
+            for c in $(git log --format=%H upstream/main -- "$1"); do
+              [ "$(git rev-parse -q --verify "$c:$1")" = "$ours" ] && return 0
+            done
+            return 1
+          }
+
+          unrelated=false
+          git merge-base HEAD upstream/main > /dev/null || unrelated=true
+
+          git checkout -B "$BRANCH"
+          # --allow-unrelated-histories covers repos created with "Use this template".
+          if git merge upstream/main --allow-unrelated-histories --no-edit -m "Merge updates from $UPSTREAM"; then
+            echo "status=merged" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # With no shared history, every file upstream changed since the copy
+          # conflicts. Take upstream's version of files the owner never edited.
+          if [ "$unrelated" = true ]; then
+            while IFS= read -r f; do
+              if unchanged_from_upstream "$f"; then
+                git checkout --theirs -- "$f"
+                git add -- "$f"
+              fi
+            done < <(git diff --name-only --diff-filter=U)
+          fi
+
+          if [ -z "$(git diff --name-only --diff-filter=U)" ]; then
+            git commit --no-edit
+            echo "status=merged" >> "$GITHUB_OUTPUT"
+          else
+            git diff --name-only --diff-filter=U > conflicts.txt
+            git merge --abort
+            echo "status=conflict" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open or update the pull request
+        if: steps.merge.outputs.status == 'merged'
+        id: pr
+        run: |
+          if ! git push --force origin "$BRANCH"; then
+            echo "failed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ -z "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[].number')" ]; then
+            gh pr create --head "$BRANCH" --base "${{ github.event.repository.default_branch }}" \
+              --title "Updates from $UPSTREAM" \
+              --body "Code and doc updates from [$UPSTREAM](https://github.com/$UPSTREAM). Your \`content/\` and \`public/images/\` are untouched. Check the deploy preview, then merge."
+          fi
+
+      - name: Explain what to do by hand
+        if: steps.merge.outputs.status == 'conflict' || steps.pr.outputs.failed == 'true'
+        run: |
+          if [ "${{ steps.merge.outputs.status }}" = "conflict" ]; then
+            reason="The update conflicts with code you changed in these files:"$'\n\n'"$(sed 's/^/- /' conflicts.txt)"
+          else
+            reason="The update changes files in .github/workflows/, which the default token can't push. Add a SYNC_TOKEN secret (see the top of .github/workflows/sync-upstream.yml) or update by hand."
+          fi
+          title="Upstream update needs a manual merge"
+          if [ -z "$(gh issue list --state open --search "in:title \"$title\"" --json number --jq '.[].number')" ]; then
+            gh issue create --title "$title" --body "$reason
+
+          Run these from your copy of the repo:
+
+          \`\`\`bash
+          git remote add upstream https://github.com/$UPSTREAM.git   # once
+          git pull upstream main --allow-unrelated-histories
+          # fix any conflicts, then
+          git push
+          \`\`\`"
+          fi

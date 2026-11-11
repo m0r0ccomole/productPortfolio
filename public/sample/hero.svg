@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="Hero photo placeholder">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d9eaf5"/>
+      <stop offset="1" stop-color="#f5ebdd"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#sky)"/>
+  <circle cx="610" cy="200" r="70" fill="#e9d4b8"/>
+  <path d="M0 560l160-140 120 90 170-190 200 170 150-90v400H0z" fill="#b5d4ea"/>
+  <path d="M0 640l220-110 180 80 190-90 210 110v170H0z" fill="#86b7da"/>
+  <circle cx="400" cy="470" r="46" fill="#1f5f8b"/>
+  <path d="M320 800c0-70 36-260 80-260s80 190 80 260z" fill="#1f5f8b"/>
+</svg>

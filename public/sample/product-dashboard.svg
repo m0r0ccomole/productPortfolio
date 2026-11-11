@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Account dashboard placeholder">
+  <rect width="800" height="600" fill="#eff6fb"/>
+  <rect x="40" y="40" width="720" height="520" rx="16" fill="#ffffff" stroke="#b5d4ea" stroke-width="2"/>
+  <rect x="40" y="40" width="160" height="520" rx="16" fill="#11344e"/>
+  <rect x="184" y="40" width="16" height="520" fill="#11344e"/>
+  <rect x="70" y="90" width="100" height="12" rx="3" fill="#5a9bc8"/>
+  <rect x="70" y="130" width="80" height="10" rx="3" fill="#86b7da"/>
+  <rect x="70" y="160" width="90" height="10" rx="3" fill="#86b7da"/>
+  <rect x="70" y="190" width="70" height="10" rx="3" fill="#86b7da"/>
+  <rect x="240" y="80" width="200" height="20" rx="4" fill="#11344e"/>
+  <rect x="240" y="130" width="240" height="140" rx="12" fill="#d9eaf5"/>
+  <rect x="264" y="160" width="110" height="12" rx="3" fill="#1f5f8b"/>
+  <rect x="264" y="190" width="170" height="32" rx="4" fill="#1f5f8b"/>
+  <rect x="500" y="130" width="220" height="140" rx="12" fill="#f5ebdd"/>
+  <rect x="524" y="160" width="90" height="12" rx="3" fill="#8a5a2b"/>
+  <rect x="524" y="190" width="140" height="32" rx="4" fill="#8a5a2b"/>
+  <rect x="240" y="300" width="480" height="220" rx="12" fill="#ffffff" stroke="#d9eaf5" stroke-width="2"/>
+  <polyline points="270,480 340,440 410,455 480,400 550,410 620,350 690,330" fill="none" stroke="#5a9bc8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,40 @@
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+# Optional environment variables (set in the Netlify dashboard, never in this file):
+# SITE_URL              = "https://your-domain.com"   overrides <site-url> in content/global-elements.xml
+# LAST_UPDATED          = "2026-01-31"                pins the footer freshness date (defaults to build date)
+# NEXT_PUBLIC_GTM_ID    = "GTM-XXXXXXX"               Google Tag Manager container; unset disables it
+# MICROSOFT_CLARITY_ID  = "xxxxxxxxxx"                Microsoft Clarity project; unset disables it
+
+[[headers]]
+  # Apply security headers to all pages
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  # Cache static assets
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Custom 404 page. Rules only apply when no real file matches the path, so this
+# never shadows a page. (The 404 page loads site content, so Next.js exports it
+# as /404/index.html rather than /404.html.)
+[[redirects]]
+  from = "/*"
+  to = "/404/index.html"
+  status = 404

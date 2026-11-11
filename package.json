@@ -1,0 +1,38 @@
+{
+  "name": "portfolio-site",
+  "version": "1.0.0",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@tailwindcss/typography": "^0.5.19",
+    "gray-matter": "^4.0.3",
+    "motion": "^12.38.0",
+    "next": "^16.3.6",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.4",
+    "@types/node": "^24.19.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@types/xml2js": "^0.4.11",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.3.6",
+    "postcss": "^8.5.10",
+    "tailwindcss": "^4.2.4",
+    "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
