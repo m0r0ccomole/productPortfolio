@@ -62,7 +62,8 @@ Decide which mode the request falls into before starting. If unsure, ask.
 | Understand the architecture and subsystem file map | [`docs/architecture.md`](docs/architecture.md) |
 | Add or revise content (blog post, case study, industry page, testimonials) | [`docs/content-authoring.md`](docs/content-authoring.md) |
 | Redesign: tokens, motion vocabulary, bespoke vs templated, role comments | [`docs/design-system.md`](docs/design-system.md) |
-| Set up a new site from this project (step-by-step runbook for humans or agents) | [`docs/setup-guide.md`](docs/setup-guide.md) |
+| Set up a new site with its owner (agent runbook: interview, drafting, hand-offs, checks) | [`docs/agent-setup-guide.md`](docs/agent-setup-guide.md) |
+| Send the owner to account steps (GitHub, Netlify, domain, analytics) or answer how those work | [`docs/setup-guide.md`](docs/setup-guide.md) |
 | Run the dev server, build, deploy, debug env vars, pull upstream updates | [`docs/development.md`](docs/development.md) |
 | Understand the strategic "why" behind the site's design | [`docs/research/`](docs/research/) |
 | Known open work | [`docs/todo.md`](docs/todo.md) |

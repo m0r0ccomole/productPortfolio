@@ -28,7 +28,9 @@ Next.js 16 (static export) · React 19 · TypeScript · Tailwind CSS 4 · Motion
 
 To run it locally: `npm install`, then `npm run dev` and open http://localhost:3000.
 
-**Using an AI agent?** Point it at [docs/setup-guide.md](docs/setup-guide.md). It's a step-by-step runbook that interviews you and builds the site with you.
+**New to git, Netlify or analytics?** [docs/setup-guide.md](docs/setup-guide.md) walks you through every account and every click, from an empty repo to a live site with working analytics.
+
+**Using an AI agent?** Point it at [docs/agent-setup-guide.md](docs/agent-setup-guide.md). It's a runbook that interviews you, drafts the content with you, and sends you to the setup guide for the steps only you can do.
 
 ## Getting updates
 
@@ -40,7 +42,8 @@ git pull upstream main
 
 ## Documentation
 
-- [docs/setup-guide.md](docs/setup-guide.md): build your site, start to finish
+- [docs/setup-guide.md](docs/setup-guide.md): for people. Build your site start to finish, including Netlify, a custom domain and analytics
+- [docs/agent-setup-guide.md](docs/agent-setup-guide.md): for AI coding agents. The runbook for setting a site up with its owner
 - [docs/content-authoring.md](docs/content-authoring.md): every XML field, blog posts, prompt blocks
 - [docs/design-system.md](docs/design-system.md): colors, motion, and how to restyle
 - [docs/architecture.md](docs/architecture.md): how the code fits together
