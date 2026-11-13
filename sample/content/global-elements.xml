@@ -24,6 +24,12 @@
       <item href="/blog">Blog</item>
     </navigation>
 
+    <!-- Small UI labels shared across pages. Optional: any key you leave out
+         uses the text from sample/content/global-elements.xml. -->
+    <ui-labels>
+      <label key="read-more">Read more →</label>
+    </ui-labels>
+
     <buttons>
       <cta-primary>View My Work</cta-primary>
       <cta-secondary>Let's Connect</cta-secondary>

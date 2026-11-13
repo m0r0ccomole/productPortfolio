@@ -4,9 +4,10 @@ import { BlogPost } from '@/lib/types';
 
 interface BlogPostCardProps {
   post: BlogPost;
+  readMoreLabel: string; // ui-labels "read-more" from global-elements.xml
 }
 
-export default function BlogPostCard({ post }: BlogPostCardProps) {
+export default function BlogPostCard({ post, readMoreLabel }: BlogPostCardProps) {
   // Format date for display
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -43,7 +44,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
             {formatDate(post.date)}
           </time>
           <span className="text-primary-500 font-medium group-hover:text-primary-600 transition-colors">
-            Read more →
+            {readMoreLabel}
           </span>
         </div>
       </article>

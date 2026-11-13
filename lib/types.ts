@@ -36,6 +36,9 @@ export interface GlobalContent {
   schedulingUrl?: string; // Calendar booking link. Omitted → calendar buttons are hidden.
   credit?: { text: string; href: string }; // Optional footer link to the template project
   navigation: NavigationItem[];
+  // Site-wide UI labels: <ui-labels><label key="...">text</label></ui-labels>.
+  // Always complete: keys missing from the owner's file are filled from sample/content.
+  uiLabels: Record<string, string>;
   buttons: {
     ctaPrimary: string;
     ctaSecondary: string;
