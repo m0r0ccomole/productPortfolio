@@ -9,13 +9,14 @@ import { GetStaticProps } from 'next';
 import { motion } from 'motion/react';
 import Layout from '../components/Layout';
 import HeroImage from '../components/HeroImage';
-import { getGlobalContent, getPageContent } from '../lib/contentParser';
-import { GlobalContent, PageContent, TimelineEvent } from '../lib/types';
+import { getGlobalContent, getPageContent, getPageLabels } from '../lib/contentParser';
+import { GlobalContent, PageContent, PageLabels, TimelineEvent } from '../lib/types';
 import { fadeUp, fadeUpStagger } from '../lib/motion';
 
 interface AboutPageProps {
   globalContent: GlobalContent;
   pageContent: PageContent;
+  pageLabels: PageLabels<'about'>;
 }
 
 const TimelineWidget: React.FC<{ data: TimelineEvent[] }> = ({ data }) => {
@@ -70,7 +71,7 @@ const TimelineWidget: React.FC<{ data: TimelineEvent[] }> = ({ data }) => {
   );
 };
 
-const AboutPage: React.FC<AboutPageProps> = ({ globalContent, pageContent }) => {
+const AboutPage: React.FC<AboutPageProps> = ({ globalContent, pageContent, pageLabels }) => {
   return (
     <Layout 
       globalContent={globalContent}
@@ -84,9 +85,9 @@ const AboutPage: React.FC<AboutPageProps> = ({ globalContent, pageContent }) => 
               {...fadeUp}
               className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6"
             >
-              {typeof pageContent.intro === 'object' && pageContent.intro?.greeting 
-                ? pageContent.intro.greeting 
-                : 'About Me'}
+              {typeof pageContent.intro === 'object' && pageContent.intro?.greeting
+                ? pageContent.intro.greeting
+                : pageLabels.heading}
             </motion.h1>
             
             <motion.p
@@ -113,6 +114,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ globalContent, pageContent }) => 
                 <HeroImage
                   src={pageContent.heroImage}
                   alt={pageContent.heroImageAlt}
+                  fallbackAlt={globalContent.uiLabels['hero-image-alt']}
                 />
               </motion.div>
             </div>
@@ -127,7 +129,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ globalContent, pageContent }) => 
                 {...fadeUpStagger(2)}
                 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-16"
               >
-                {pageContent.timelineHeading ?? 'My Journey'}
+                {pageContent.timelineHeading}
               </motion.h2>
               
               <TimelineWidget data={pageContent.timelineData} />
@@ -168,11 +170,13 @@ const AboutPage: React.FC<AboutPageProps> = ({ globalContent, pageContent }) => 
 export const getStaticProps: GetStaticProps = async () => {
   const globalContent = await getGlobalContent();
   const pageContent = await getPageContent('about');
-  
+  const pageLabels = await getPageLabels('about');
+
   return {
     props: {
       globalContent,
       pageContent,
+      pageLabels,
     },
   };
 };

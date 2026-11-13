@@ -4,13 +4,13 @@ import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Layout from '@/components/Layout';
 import BlogPostCard from '@/components/BlogPostCard';
-import { getListedBlogPosts, getGlobalContent, getPageContent } from '@/lib/contentParser';
-import { BlogPost, GlobalContent } from '@/lib/types';
+import { getListedBlogPosts, getGlobalContent, getPageLabels } from '@/lib/contentParser';
+import { BlogPost, GlobalContent, PageLabels } from '@/lib/types';
 
 interface BlogIndexProps {
   posts: BlogPost[];
   globalContent: GlobalContent;
-  labels: Record<string, string>;
+  labels: PageLabels<'blog'>;
 }
 
 export default function BlogIndex({ posts, globalContent, labels }: BlogIndexProps) {
@@ -28,7 +28,7 @@ export default function BlogIndex({ posts, globalContent, labels }: BlogIndexPro
         {/* Header */}
         <header className="mb-12 text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            {labels.heading ?? 'Blog'}
+            {labels.heading}
           </h1>
           {labels.intro && (
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -51,7 +51,7 @@ export default function BlogIndex({ posts, globalContent, labels }: BlogIndexPro
         ) : (
           <div className="text-center py-12">
             <p className="text-gray-600">
-              {labels.empty ?? 'No posts yet.'}
+              {labels.empty}
             </p>
           </div>
         )}
@@ -79,7 +79,7 @@ export const getStaticProps: GetStaticProps = async () => {
   try {
     const posts = await getListedBlogPosts();
     const globalContent = await getGlobalContent();
-    const labels = (await getPageContent('blog'))?.labels ?? {};
+    const labels = await getPageLabels('blog');
 
     // Sort posts by date (newest first)
     posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -97,7 +97,7 @@ export const getStaticProps: GetStaticProps = async () => {
       props: {
         posts: [],
         globalContent: await getGlobalContent(),
-        labels: {},
+        labels: await getPageLabels('blog'),
       },
     };
   }

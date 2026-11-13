@@ -28,6 +28,7 @@ const Layout: React.FC<LayoutProps> = ({
   const siteUrl = (process.env.SITE_URL || globalContent.siteUrl).replace(/\/$/, '');
   const { favicon, ogImage } = globalContent.globalImages ?? {};
   const ogImageUrl = ogImage ? `${siteUrl}${ogImage}` : undefined;
+  const labels = globalContent.uiLabels;
 
   return (
     <>
@@ -73,13 +74,14 @@ const Layout: React.FC<LayoutProps> = ({
       <div className="min-h-screen bg-gray-50">
         {/* Skip to content link for accessibility */}
         <a href="#main-content" className="skip-link">
-          Skip to main content
+          {labels['skip-link']}
         </a>
 
         <Navigation 
           navigation={globalContent.navigation} 
           siteTitle={globalContent.siteTitle}
           globalImages={globalContent.globalImages}
+          labels={labels}
         />
 
         <main id="main-content" className="pt-16">
@@ -90,21 +92,21 @@ const Layout: React.FC<LayoutProps> = ({
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
               <div className="flex items-center space-x-4">
-                <FreshnessIndicator />
+                <FreshnessIndicator label={labels['last-updated']} />
               </div>
               
               <div className="flex space-x-6 text-sm text-gray-600">
                 <Link href="/privacy" className="hover:text-primary-600 transition-colors">
-                  Privacy Policy
+                  {labels['footer-privacy']}
                 </Link>
                 <a href={`mailto:${globalContent.contactEmail}`} className="hover:text-primary-600 transition-colors">
-                  Contact
+                  {labels['footer-contact']}
                 </a>
               </div>
             </div>
             
             <div className="mt-4 pt-4 border-t border-gray-200 text-center text-sm text-gray-500">
-              © {new Date().getFullYear()} {globalContent.ownerName}. All rights reserved.
+              © {new Date().getFullYear()} {globalContent.ownerName}. {labels['footer-rights']}
               {globalContent.credit && (
                 <>
                   {' · '}

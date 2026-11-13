@@ -30,7 +30,7 @@ export default function BlogPostPage({ post, prompts, globalContent }: BlogPostP
         <meta property="article:section" content={post.category} />
       </Head>
       
-      <BlogPostTemplate post={post} prompts={prompts} />
+      <BlogPostTemplate post={post} prompts={prompts} labels={globalContent.uiLabels} />
     </Layout>
   );
 }

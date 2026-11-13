@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { CodeBlock, CommentBlock } from '@/lib/types';
+import { CodeBlock, CommentBlock, UiLabels } from '@/lib/types';
 import { copyToClipboard } from '@/lib/copyToClipboard';
 
 interface PromptBlockProps {
   prompt: CodeBlock;
   index: number;
+  labels: UiLabels;
 }
 
-export default function PromptBlock({ prompt, index }: PromptBlockProps) {
+export default function PromptBlock({ prompt, index, labels }: PromptBlockProps) {
   const [copied, setCopied] = useState(false);
   const [expandedComments, setExpandedComments] = useState<Set<string>>(
     new Set(prompt.comments.map(c => c.id))
@@ -51,7 +52,7 @@ export default function PromptBlock({ prompt, index }: PromptBlockProps) {
             <button
               onClick={() => toggleComment(comment.id)}
               className="text-primary-300 hover:text-primary-200 text-sm font-mono"
-              title={isExpanded ? "Hide comment" : "Show comment"}
+              title={isExpanded ? labels['prompt-hide-comment'] : labels['prompt-show-comment']}
             >
               {isExpanded ? '−' : '+'}
             </button>
@@ -86,7 +87,7 @@ export default function PromptBlock({ prompt, index }: PromptBlockProps) {
               ? 'bg-green-600 text-white'
               : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'
           }`}
-          title="Copy to clipboard"
+          title={labels['prompt-copy']}
         >
           {copied ? (
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

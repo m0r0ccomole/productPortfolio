@@ -58,6 +58,7 @@ Orientation aid, not a checklist. Grep is authoritative for "what references X."
 | Subsystem | Primary files | Notes |
 |---|---|---|
 | Content parsing | `lib/contentParser.ts`, `lib/types.ts`, `content/*.xml` | Types first, then parser, then consumers. |
+| UI labels | `lib/types.ts` (`UI_LABEL_KEYS`, `PAGE_LABEL_KEYS`), `lib/contentParser.ts` (`labelsWithSampleFallback`), `lib/labels.ts`, `content/global-elements.xml` (`<ui-labels>`), `content/pages.xml` (`<labels>`) | Generic interface text. A key missing from `content/` is read from `sample/content/`; a key missing from the sample fails the build. To add one: add the key to the list in `lib/types.ts`, add its text to `sample/content/`, document it in `content-authoring.md`. |
 | Markdown + prompts | `lib/markdownProcessor.ts`, `lib/copyToClipboard.ts`, `components/BlogContent.tsx`, `components/PromptBlock.tsx`, `content/blog-markdown/` | Preserve `:::prompt` and `{{comment: …}}` syntax exactly. |
 | Navigation + layout + SEO | `components/Layout.tsx`, `components/Navigation.tsx`, `components/Headshot.tsx`, `content/global-elements.xml` | Page titles/descriptions come from `<seo>` in global-elements, looked up by `metaKey`. |
 | Images | `components/Headshot.tsx`, `components/HeroImage.tsx`, `components/CaseStudyImage.tsx`, `public/images/` | Image components fall back gracefully when a file is missing. |
@@ -68,7 +69,7 @@ Orientation aid, not a checklist. Grep is authoritative for "what references X."
 | Testimonials | `components/Testimonials.tsx`, `content/testimonials.xml`, `content/industry-pages.xml` (`selected-ids`) | Global collection; pages opt in by ID. |
 | CTAs | `components/CTASection.tsx`, `components/FloatingButton.tsx`, `content/global-elements.xml` (`cta-content`) | Industry pages and deep dives pass context to generate email subjects. |
 | Email signature landing | `pages/hello.tsx`, `content/industry-pages.xml` (`page id="hello"`) | Personalized via `?name=`. Calendar button appears only when `<scheduling-url>` is set. |
-| Static pages | `pages/about.tsx`, `pages/projects.tsx`, `pages/privacy.tsx`, `pages/404.tsx`, `content/pages.xml` | All copy, including labels, comes from `pages.xml`. |
+| Static pages | `pages/about.tsx`, `pages/projects.tsx`, `pages/privacy.tsx`, `pages/404.tsx`, `content/pages.xml` | All copy, including labels, comes from `pages.xml`. The 404 and privacy pages fall back to the sample's copy when missing. |
 | Design tokens | `content/theme.js`, `tailwind.config.js`, `lib/motion.ts`, `styles/globals.css` | See `design-system.md`. |
 | Analytics | `pages/_document.tsx` (GTM), `components/Layout.tsx` (Clarity), `components/FloatingButton.tsx` (CTA click events), `next.config.js` | All IDs come from env vars; unset disables the integration. |
 | Freshness indicator | `components/FreshnessIndicator.tsx`, `next.config.js` (`LAST_UPDATED`) | Defaults to the build date. |

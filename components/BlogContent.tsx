@@ -1,13 +1,14 @@
 import React from 'react';
-import { CodeBlock } from '@/lib/types';
+import { CodeBlock, UiLabels } from '@/lib/types';
 import PromptBlock from './PromptBlock';
 
 interface BlogContentProps {
   htmlContent: string;
   prompts: CodeBlock[];
+  labels: UiLabels;
 }
 
-export default function BlogContent({ htmlContent, prompts }: BlogContentProps) {
+export default function BlogContent({ htmlContent, prompts, labels }: BlogContentProps) {
   // Split HTML content by prompt placeholders and render components
   const renderContentWithPrompts = () => {
     // Try multiple patterns in case remark modifies the HTML
@@ -46,6 +47,7 @@ export default function BlogContent({ htmlContent, prompts }: BlogContentProps) 
               key={`prompt-${promptIndex}`}
               prompt={prompt}
               index={promptIndex}
+              labels={labels}
             />
           );
         }

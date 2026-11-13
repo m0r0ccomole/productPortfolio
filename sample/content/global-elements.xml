@@ -25,9 +25,67 @@
     </navigation>
 
     <!-- Small UI labels shared across pages. Optional: any key you leave out
-         uses the text from sample/content/global-elements.xml. -->
+         uses the text from sample/content/global-elements.xml. An empty label
+         hides that text. Words in {braces} are filled in by the site; keep them. -->
     <ui-labels>
+      <!-- Layout, navigation, images -->
+      <label key="skip-link">Skip to main content</label>
+      <label key="footer-privacy">Privacy Policy</label>
+      <label key="footer-contact">Contact</label>
+      <label key="footer-rights">All rights reserved.</label>
+      <label key="last-updated">Last updated:</label>
+      <label key="nav-toggle-menu">Toggle menu</label>
+      <label key="headshot-alt">Profile photo</label>
+      <label key="headshot-placeholder">Profile photo placeholder</label>
+      <label key="hero-image-alt">Hero image</label>
+      <label key="image-close">Close modal</label>
+
+      <!-- Blog -->
       <label key="read-more">Read more →</label>
+      <label key="min-read">{minutes} min read</label>
+      <label key="blog-back">← Back to Blog</label>
+      <label key="prompt-copy">Copy to clipboard</label>
+      <label key="prompt-show-comment">Show comment</label>
+      <label key="prompt-hide-comment">Hide comment</label>
+
+      <!-- Testimonials -->
+      <label key="testimonials-heading">What Others Say</label>
+      <label key="testimonials-previous">Previous testimonials</label>
+      <label key="testimonials-next">Next testimonials</label>
+      <label key="testimonials-page">Go to testimonials page {page}</label>
+      <label key="testimonial-image-alt">{name} headshot</label>
+      <label key="testimonial-placeholder">{name} profile photo placeholder</label>
+
+      <!-- Case studies and product briefs -->
+      <label key="deep-dive-brief-badge">Product Brief</label>
+      <label key="deep-dive-role">Role</label>
+      <label key="deep-dive-company">Company</label>
+      <label key="deep-dive-timeframe">Timeframe</label>
+      <label key="deep-dive-stakes">Stakes</label>
+      <label key="deep-dive-challenge">Challenge</label>
+      <label key="deep-dive-problem">The Problem</label>
+      <label key="deep-dive-opportunity">The Opportunity</label>
+      <label key="deep-dive-approach">My Approach</label>
+      <label key="deep-dive-build">How We Built It</label>
+      <label key="deep-dive-results">Results</label>
+      <label key="deep-dive-achieved">What We Achieved</label>
+      <label key="deep-dive-evidence">Evidence you can see in action</label>
+      <label key="deep-dive-email-subject">Discussion: {title}</label>
+      <label key="deep-dive-meta-description">Case study: {summary}</label>
+      <label key="deep-dive-meta-keywords">case study, product management, {company}, {id}</label>
+
+      <!-- Industry pages -->
+      <label key="industry-relevance">Here's What I Bring</label>
+      <label key="industry-achievements">Key Achievements</label>
+      <label key="industry-more-work">View more of my work →</label>
+      <label key="industry-skills">Relevant Skills</label>
+      <label key="industry-meta-title">{industry} Experience | {owner}</label>
+      <label key="industry-meta-description">{industry} product leadership experience and achievements by {owner}</label>
+      <label key="industry-meta-keywords">{industry}, product management, {id}, experience</label>
+
+      <!-- Shown on /hello when the hello page or its generic greeting is missing -->
+      <label key="hello-fallback-heading">Hello there!</label>
+      <label key="hello-fallback-message">Thanks for visiting.</label>
     </ui-labels>
 
     <buttons>
