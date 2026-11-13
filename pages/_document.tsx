@@ -6,6 +6,10 @@ export default function Document() {
       <Head>
         {/* Google Tag Manager */}
         {process.env.NEXT_PUBLIC_GTM_ID && (
+          // The rule wants next/script or @next/third-parties here. Both change
+          // when GTM loads, and the second adds a dependency. Keep Google's
+          // standard inline snippet in <head> so tag timing stays as it is.
+          // eslint-disable-next-line @next/next/next-script-for-ga
           <script
             dangerouslySetInnerHTML={{
               __html: `

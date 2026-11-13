@@ -12,8 +12,3 @@ Done: the generic UI labels that were inline in JSX now live in `<ui-labels>` in
 
 - [ ] `components/templates/IndustryLanding.tsx`: `generateIndustryCTA` hardcodes CTA button text and email subjects for four industry keys (`fintech`, `consumer`, `iot`, `platform`) plus a generic default. This is per-industry copy, so it belongs in `industry-pages.xml` as optional per-page fields, with `<cta-content>` in `global-elements.xml` as the default. Moving it changes what existing sites render, so it needs a decision first.
 - [ ] Dates are formatted for `en-US` in code (`components/BlogPostCard.tsx`, `components/templates/BlogPost.tsx`, `components/FreshnessIndicator.tsx`, `pages/privacy.tsx`), and `<Html lang="en">` is fixed in `pages/_document.tsx`. A site in another language needs a locale setting.
-
-## Lint warnings (non-blocking)
-
-- [ ] `@next/next/no-img-element` in the image components. `next/image` needs a loader under static export; `<img>` is intentional for now.
-- [ ] `@next/next/next-script-for-ga` in `pages/_document.tsx`. Consider `@next/third-parties/google` for GTM.
