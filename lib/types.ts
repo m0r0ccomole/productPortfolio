@@ -354,6 +354,8 @@ export interface BlogPost {
   category: string;
   excerpt: string;
   listed: boolean;
+  /** Markdown filename under blog-markdown/, which can differ from the slug */
+  sourceFile?: string;
   content?: string;
   htmlContent?: string;
 }

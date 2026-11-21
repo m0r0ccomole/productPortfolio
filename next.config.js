@@ -5,6 +5,9 @@ const buildDate = new Date().toISOString().slice(0, 10)
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Next 16.3+ appends an agent-rules block to CLAUDE.md on `next dev`. CLAUDE.md
+  // is a shared upstream file, so keep the dev server from editing it.
+  agentRules: false,
   output: 'export',
   trailingSlash: true,
   images: {

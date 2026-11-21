@@ -46,11 +46,11 @@ Tell the person the shape of the work: setup (about an hour), interview and draf
 
 ```bash
 git --version     # any recent version
-node --version    # must start with v24
+node --version    # v24 or later
 npm --version
 ```
 
-**Check:** all three print a version and Node starts with `v24`.
+**Check:** all three print a version and Node is `v24` or later.
 
 If anything is missing, **hand off** to [Install git and Node](setup-guide.md#install-git-and-node) and re-run the check when they return. Do not install system software yourself unless the person asks you to.
 
