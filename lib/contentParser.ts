@@ -44,6 +44,47 @@ function contentPath(...parts: string[]): string {
   return join(process.cwd(), contentRoot, ...parts);
 }
 
+// Upstream adds new optional fields to sample/content first. A site owner's
+// content/ predates them, so the parser reads the sample copy of the same file
+// to fill whatever the owner's file lacks. This keeps default copy in XML, not in code.
+const cachedSampleXml: Record<string, Promise<any>> = {};
+
+function parseSampleXml(file: string): Promise<any> {
+  if (!cachedSampleXml[file]) {
+    cachedSampleXml[file] = fs
+      .readFile(join(process.cwd(), 'sample', 'content', file), 'utf8')
+      .then(
+        (xml) =>
+          new Promise<any>((resolve, reject) => {
+            parseString(xml, (err: any, result: any) => (err ? reject(err) : resolve(result)));
+          })
+      );
+  }
+  return cachedSampleXml[file];
+}
+
+// Reads a keyed label list: <label key="...">text</label> children of the given node.
+function readLabels(node: any): Record<string, string> {
+  return Object.fromEntries(
+    (node?.label ?? []).map((l: any) => [l.$.key, l._ ?? ''])
+  );
+}
+
+// Merges the owner's labels over the sample's. `pick` selects the same label
+// container node from either parsed file. A key the owner defines always wins,
+// a key the owner lacks takes the sample text.
+async function labelsWithSampleFallback(
+  file: string,
+  ownerRoot: any,
+  pick: (root: any) => any
+): Promise<Record<string, string>> {
+  const owner = readLabels(pick(ownerRoot));
+  if (usingSampleContent) {
+    return owner;
+  }
+  return { ...readLabels(pick(await parseSampleXml(file))), ...owner };
+}
+
 // NEW: Parse global elements from separate file
 async function parseGlobalElementsContent(): Promise<any> {
   // Clear cache in development/build to always read fresh XML
@@ -91,6 +132,11 @@ async function parseGlobalElements(): Promise<GlobalContent> {
       href: item.$.href,
       text: item._
     })),
+    uiLabels: await labelsWithSampleFallback(
+      'global-elements.xml',
+      content,
+      (root) => root?.['global-elements']?.global?.[0]?.['ui-labels']?.[0]
+    ),
     buttons: {
       ctaPrimary: global.buttons[0]['cta-primary'][0],
       ctaSecondary: global.buttons[0]['cta-secondary'][0],
@@ -438,9 +484,7 @@ async function parseStaticPagesFromNewStructure(pageId: string): Promise<PageCon
   }
 
   if (page.labels) {
-    result.labels = Object.fromEntries(
-      (page.labels[0].label ?? []).map((l: any) => [l.$.key, l._ ?? ''])
-    );
+    result.labels = readLabels(page.labels[0]);
   }
 
   if (page['not-found']) {

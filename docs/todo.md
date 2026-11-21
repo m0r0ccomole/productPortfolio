@@ -11,7 +11,7 @@ Goal: a site owner fills in `content/` and `content/theme.js` without touching `
 - [ ] `components/templates/DeepDive.tsx`: "The Problem", "The Opportunity", "Evidence you can see in action"
 - [ ] `components/templates/IndustryLanding.tsx`: "Here's What I Bring", "Key Achievements", "View more of my work →", "Relevant Skills"
 - [ ] `components/Testimonials.tsx`: "What Others Say"
-- [ ] `components/BlogPostCard.tsx`: "Read more →"
+- [x] `components/BlogPostCard.tsx`: "Read more →" (now `<ui-labels>` key `read-more` in `global-elements.xml`)
 - [ ] `components/Layout.tsx`: footer "Privacy Policy" / "Contact" links, "Skip to main content"
 - [ ] `pages/privacy.tsx`: "Last updated:" prefix
 - [ ] `pages/hello.tsx`: fallback "Hello there!" / "Thanks for visiting." when the hello page is missing from XML

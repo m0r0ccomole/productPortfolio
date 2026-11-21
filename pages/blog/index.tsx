@@ -41,7 +41,11 @@ export default function BlogIndex({ posts, globalContent, labels }: BlogIndexPro
         {posts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {posts.map((post) => (
-              <BlogPostCard key={post.id} post={post} />
+              <BlogPostCard
+                key={post.id}
+                post={post}
+                readMoreLabel={globalContent.uiLabels['read-more']}
+              />
             ))}
           </div>
         ) : (
