@@ -46,6 +46,18 @@ Config is in `netlify.toml`:
 
 Push to `main` → Netlify builds and deploys automatically. Pull requests get deploy previews. SSL is handled by Netlify.
 
+### Crawlers (`public/robots.txt`)
+
+`public/robots.txt` is copied to the site root as is. It sorts crawlers into three groups:
+
+- **Allowed, search:** Googlebot, Bingbot, DuckDuckBot and Applebot (Siri, Spotlight and Safari results).
+- **Allowed, link previews:** LinkedInBot, Twitterbot, facebookexternalhit, WhatsApp, TelegramBot, Slackbot and Discordbot. These fetch a page when someone pastes its link, to build the preview card. Blocking them makes shared links show up bare, which defeats the point of sending them.
+- **Blocked:** AI training crawlers and AI assistants (GPTBot, ChatGPT-User, CCBot, ClaudeBot, Google-Extended, Applebot-Extended, PerplexityBot, Meta-ExternalAgent and others), plus every crawler not named in the file, through the `User-agent: *` catch-all.
+
+The catch-all is a privacy default, not an SEO choice. It also blocks smaller search engines (Yandex, Baidu, Naver), the Internet Archive, SEO tools, and link previews from apps not listed. To open the site to everything except the named AI crawlers, change the last group to `Allow: /`. Separately, the blog pages carry `<meta name="robots" content="noindex">` (`pages/blog/`), so they stay out of search results even for allowed crawlers.
+
+Robots rules are a request. Well-behaved crawlers follow them; nothing enforces them.
+
 ## Getting upstream updates
 
 This project is meant to be copied. Your copy's `content/` and `public/images/` folders are yours; the upstream repo ([m0r0ccomole/productPortfolio](https://github.com/m0r0ccomole/productPortfolio)) never contains them, so pulling upstream changes never touches your content.
