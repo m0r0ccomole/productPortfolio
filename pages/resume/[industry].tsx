@@ -4,6 +4,7 @@ import Layout from '../../components/Layout';
 import IndustryLanding from '../../components/templates/IndustryLanding';
 import { getGlobalContent, getIndustryPageContent, getAllIndustries } from '../../lib/contentParser';
 import { GlobalContent, IndustryPageContent } from '../../lib/types';
+import { fillLabel } from '../../lib/labels';
 
 interface IndustryPageProps {
   globalContent: GlobalContent;
@@ -11,14 +12,19 @@ interface IndustryPageProps {
 }
 
 const IndustryPage: React.FC<IndustryPageProps> = ({ globalContent, industryContent }) => {
-  const industryName = industryContent.displayName;
+  const labels = globalContent.uiLabels;
+  const values = {
+    industry: industryContent.displayName,
+    owner: globalContent.ownerName,
+    id: industryContent.id
+  };
 
   return (
     <Layout 
       globalContent={globalContent}
-      title={`${industryName} Experience | ${globalContent.ownerName}`}
-      description={`${industryName} product leadership experience and achievements by ${globalContent.ownerName}`}
-      keywords={`${industryName}, product management, ${industryContent.id}, experience`}
+      title={fillLabel(labels['industry-meta-title'], values)}
+      description={fillLabel(labels['industry-meta-description'], values)}
+      keywords={fillLabel(labels['industry-meta-keywords'], values)}
     >
       <IndustryLanding content={industryContent} globalContent={globalContent} />
     </Layout>

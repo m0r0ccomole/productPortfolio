@@ -4,19 +4,11 @@ Known open work on this project. Check items off or add to the list as work happ
 
 Related: a `NOTE:` line in a file's `// ROLE:` header is the file-local version of an entry here. Keep both in sync when an item is resolved.
 
-## Content/design separation — remaining inline labels
+## Content/design separation
 
-Goal: a site owner fills in `content/` and `content/theme.js` without touching `/components/` or `/pages/`. Every owner-specific value and page-level copy block is already in XML. These generic UI labels are still inline in JSX:
+Goal: a site owner fills in `content/` and `content/theme.js` without touching `/components/` or `/pages/`.
 
-- [ ] `components/templates/DeepDive.tsx`: "The Problem", "The Opportunity", "Evidence you can see in action"
-- [ ] `components/templates/IndustryLanding.tsx`: "Here's What I Bring", "Key Achievements", "View more of my work →", "Relevant Skills"
-- [ ] `components/Testimonials.tsx`: "What Others Say"
-- [x] `components/BlogPostCard.tsx`: "Read more →" (now `<ui-labels>` key `read-more` in `global-elements.xml`)
-- [ ] `components/Layout.tsx`: footer "Privacy Policy" / "Contact" links, "Skip to main content"
-- [ ] `pages/privacy.tsx`: "Last updated:" prefix
-- [ ] `pages/hello.tsx`: fallback "Hello there!" / "Thanks for visiting." when the hello page is missing from XML
+Done: the generic UI labels that were inline in JSX now live in `<ui-labels>` in `global-elements.xml` and in per-page `<labels>` in `pages.xml`, with defaults read from `sample/content`. See `content-authoring.md`. Still open:
 
-## Lint warnings (non-blocking)
-
-- [ ] `@next/next/no-img-element` in the image components. `next/image` needs a loader under static export; `<img>` is intentional for now.
-- [ ] `@next/next/next-script-for-ga` in `pages/_document.tsx`. Consider `@next/third-parties/google` for GTM.
+- [ ] `components/templates/IndustryLanding.tsx`: `generateIndustryCTA` hardcodes CTA button text and email subjects for four industry keys (`fintech`, `consumer`, `iot`, `platform`) plus a generic default. This is per-industry copy, so it belongs in `industry-pages.xml` as optional per-page fields, with `<cta-content>` in `global-elements.xml` as the default. Moving it changes what existing sites render, so it needs a decision first.
+- [ ] Dates are formatted for `en-US` in code (`components/BlogPostCard.tsx`, `components/templates/BlogPost.tsx`, `components/FreshnessIndicator.tsx`, `pages/privacy.tsx`), and `<Html lang="en">` is fixed in `pages/_document.tsx`. A site in another language needs a locale setting.

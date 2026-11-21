@@ -60,6 +60,10 @@
 
   <!-- About Page -->
   <page id="about">
+    <!-- heading: page title used only when <intro><greeting> is missing -->
+    <labels>
+      <label key="heading">About Me</label>
+    </labels>
     <timeline-heading>My Journey</timeline-heading>
     <intro>
       <greeting>I'm Riley, and I like taking things apart to see how they work.</greeting>
@@ -125,6 +129,10 @@
 
   <!-- Projects Page -->
   <page id="projects">
+    <!-- heading: page title used only when <intro><title> is missing -->
+    <labels>
+      <label key="heading">Side Projects &amp; Experiments</label>
+    </labels>
     <project-labels>
       <tech-stack>Tech Stack</tech-stack>
       <key-features>Key Features</key-features>

@@ -9,27 +9,21 @@ import { GetStaticProps } from 'next';
 import { motion } from 'motion/react';
 import Layout from '../components/Layout';
 import FloatingButton from '../components/FloatingButton';
-import { getGlobalContent, getPageContent } from '../lib/contentParser';
-import { GlobalContent, PageContent } from '../lib/types';
+import { getGlobalContent, getPageContent, getPageLabels } from '../lib/contentParser';
+import { GlobalContent, PageContent, PageLabels } from '../lib/types';
 import { fadeUp, fadeUpStagger } from '../lib/motion';
 
 interface ProjectsPageProps {
   globalContent: GlobalContent;
   pageContent: PageContent;
+  pageLabels: PageLabels<'projects'>;
 }
 
-const ProjectsPage: React.FC<ProjectsPageProps> = ({ globalContent, pageContent }) => {
-  const labels = pageContent.projectLabels ?? {
-    techStack: 'Tech Stack',
-    keyFeatures: 'Key Features',
-    retired: 'Retired',
-    postMortem: 'Post-mortem'
-  };
-  const closingCta = pageContent.closingCta ?? {
-    heading: 'Want to Build Something Together?',
-    primaryButton: 'Learn More About Me',
-    primaryHref: '/about'
-  };
+const ProjectsPage: React.FC<ProjectsPageProps> = ({ globalContent, pageContent, pageLabels }) => {
+  // The parser fills both from sample/content when the owner's page lacks them
+  const labels = pageContent.projectLabels;
+  const closingCta = pageContent.closingCta;
+  const intro = typeof pageContent.intro === 'object' ? pageContent.intro : undefined;
 
   return (
     <Layout 
@@ -44,19 +38,17 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ globalContent, pageContent 
               {...fadeUp}
               className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6"
             >
-              {typeof pageContent.intro === 'object' && pageContent.intro?.title 
-                ? pageContent.intro.title 
-                : 'Side Projects & Experiments'}
+              {intro?.title || pageLabels.heading}
             </motion.h1>
-            
-            <motion.p
-              {...fadeUpStagger(1)}
-              className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto"
-            >
-              {typeof pageContent.intro === 'object' && pageContent.intro?.description 
-                ? pageContent.intro.description 
-                : 'I\'m always building something. Here are some recent projects that I\'ve been into.'}
-            </motion.p>
+
+            {intro?.description && (
+              <motion.p
+                {...fadeUpStagger(1)}
+                className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto"
+              >
+                {intro.description}
+              </motion.p>
+            )}
           </div>
         </section>
 
@@ -81,7 +73,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ globalContent, pageContent 
                   
                   <div className="mb-6">
                     <h4 className="text-lg font-semibold text-gray-900 mb-3">
-                      {labels.techStack}
+                      {labels?.techStack}
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {project.techStack.map((tech, techIndex) => (
@@ -97,7 +89,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ globalContent, pageContent 
                   
                   <div>
                     <h4 className="text-lg font-semibold text-gray-900 mb-3">
-                      {labels.keyFeatures}
+                      {labels?.keyFeatures}
                     </h4>
                     <ul className="space-y-2">
                       {project.highlights.map((highlight, highlightIndex) => (
@@ -145,7 +137,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ globalContent, pageContent 
                         {project.title}
                       </h3>
                       <span className="px-3 py-1 bg-accent-100 text-accent-600 rounded-full text-sm font-medium whitespace-nowrap">
-                        {labels.retired}{project.retired ? ` ${project.retired}` : ''}
+                        {labels?.retired}{project.retired ? ` ${project.retired}` : ''}
                       </span>
                     </div>
 
@@ -169,7 +161,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ globalContent, pageContent 
                     {project.postMortem.length > 0 && (
                       <div className="border-l-4 border-accent-300 pl-4">
                         <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                          {labels.postMortem}
+                          {labels?.postMortem}
                         </h4>
                         {project.postMortem.map((paragraph, pIndex) => (
                           <p key={pIndex} className="text-gray-600 leading-relaxed mt-3 first:mt-0">
@@ -192,16 +184,18 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ globalContent, pageContent 
               {...fadeUpStagger(4)}
               className="text-3xl md:text-4xl font-bold text-gray-900 mb-8"
             >
-              {closingCta.heading}
+              {closingCta?.heading}
             </motion.h2>
-            
+
             <motion.div
               {...fadeUpStagger(5)}
               className="flex flex-col sm:flex-row gap-4 justify-center"
             >
-              <FloatingButton href={closingCta.primaryHref} size="lg">
-                {closingCta.primaryButton}
-              </FloatingButton>
+              {closingCta && (
+                <FloatingButton href={closingCta.primaryHref} size="lg">
+                  {closingCta.primaryButton}
+                </FloatingButton>
+              )}
               <FloatingButton href={`mailto:${globalContent.contactEmail}`} variant="secondary" size="lg">
                 {globalContent.buttons.ctaEmail}
               </FloatingButton>
@@ -216,11 +210,13 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ globalContent, pageContent 
 export const getStaticProps: GetStaticProps = async () => {
   const globalContent = await getGlobalContent();
   const pageContent = await getPageContent('projects');
-  
+  const pageLabels = await getPageLabels('projects');
+
   return {
     props: {
       globalContent,
       pageContent,
+      pageLabels,
     },
   };
 };

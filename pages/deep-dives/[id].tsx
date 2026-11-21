@@ -4,6 +4,7 @@ import Layout from '../../components/Layout';
 import DeepDive from '../../components/templates/DeepDive';
 import { getGlobalContent, getDeepDiveContent, getAllDeepDives } from '../../lib/contentParser';
 import { GlobalContent, DeepDiveContent } from '../../lib/types';
+import { fillLabel } from '../../lib/labels';
 
 interface DeepDivePageProps {
   globalContent: GlobalContent;
@@ -15,8 +16,13 @@ const DeepDivePage: React.FC<DeepDivePageProps> = ({ globalContent, deepDiveCont
     <Layout 
       globalContent={globalContent}
       title={`${deepDiveContent.title} | ${globalContent.ownerName}`}
-      description={`Case study: ${deepDiveContent.problem.summary}`}
-      keywords={`case study, product management, ${deepDiveContent.context.company}, ${deepDiveContent.id}`}
+      description={fillLabel(globalContent.uiLabels['deep-dive-meta-description'], {
+        summary: deepDiveContent.problem.summary
+      })}
+      keywords={fillLabel(globalContent.uiLabels['deep-dive-meta-keywords'], {
+        company: deepDiveContent.context.company,
+        id: deepDiveContent.id
+      })}
     >
       <DeepDive content={deepDiveContent} globalContent={globalContent} />
     </Layout>

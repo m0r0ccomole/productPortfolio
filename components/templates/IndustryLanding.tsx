@@ -1,7 +1,8 @@
 // ROLE: template
 // PURPOSE: Renders an industry landing page from an IndustryPageContent object.
-// CONTENT: content/industry-pages.xml via getIndustryPageContent(id); CTA copy from content/global-elements.xml.
-// SAFE TO RESTYLE: layout, motion tokens, semantic color tokens, spacing. Section headings + per-industry CTA copy are template defaults.
+// CONTENT: content/industry-pages.xml via getIndustryPageContent(id); CTA heading and section headings (<ui-labels>) from content/global-elements.xml.
+// SAFE TO RESTYLE: layout, motion tokens, semantic color tokens, spacing.
+// NOTE: the per-industry CTA button text and email subjects in generateIndustryCTA are still inline. See docs/todo.md.
 // DO NOT: put per-page copy here (it belongs in industry-pages.xml), bypass tokens or lib/motion.ts.
 
 import React from 'react';
@@ -21,6 +22,8 @@ interface IndustryLandingProps {
 }
 
 const IndustryLanding: React.FC<IndustryLandingProps> = ({ content, globalContent }) => {
+  const labels = globalContent.uiLabels;
+
   // Helper function to find matching key using contains logic
   const findMatchingKey = (industryId: string, availableKeys: string[]): string | null => {
     // First try exact match
@@ -108,9 +111,11 @@ const IndustryLanding: React.FC<IndustryLandingProps> = ({ content, globalConten
             {...fadeUpStagger(2)}
             className="bg-white rounded-2xl shadow-float p-8 md:p-12"
           >
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-              Here&apos;s What I Bring
-            </h2>
+            {labels['industry-relevance'] && (
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
+                {labels['industry-relevance']}
+              </h2>
+            )}
             <p className="text-lg text-gray-700 leading-relaxed">
               {content.relevance.statement}
             </p>
@@ -121,12 +126,14 @@ const IndustryLanding: React.FC<IndustryLandingProps> = ({ content, globalConten
       {/* Featured Achievements */}
       <section className="px-4 sm:px-6 lg:px-8 py-16">
         <div className="max-w-6xl mx-auto">
-          <motion.h2
-            {...fadeUpStagger(3)}
-            className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12"
-          >
-            Key Achievements
-          </motion.h2>
+          {labels['industry-achievements'] && (
+            <motion.h2
+              {...fadeUpStagger(3)}
+              className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12"
+            >
+              {labels['industry-achievements']}
+            </motion.h2>
+          )}
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {content.featuredAchievements.map((achievement, index) => (
@@ -172,7 +179,7 @@ const IndustryLanding: React.FC<IndustryLandingProps> = ({ content, globalConten
                 href="/deep-dives"
                 className="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium text-xl transition-colors duration-200"
               >
-                View more of my work →
+                {labels['industry-more-work']}
               </Link>
             </motion.div>
           </div>
@@ -181,18 +188,20 @@ const IndustryLanding: React.FC<IndustryLandingProps> = ({ content, globalConten
 
       {/* Testimonials */}
       {content.testimonials && (
-        <Testimonials testimonialsSection={content.testimonials} />
+        <Testimonials testimonialsSection={content.testimonials} labels={labels} />
       )}
 
       {/* Skills Grid */}
       <section className="px-4 sm:px-6 lg:px-8 py-16">
         <div className="max-w-4xl mx-auto">
-          <motion.h2
-            {...fadeUpStagger(content.testimonials ? 9 : 7)}
-            className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12"
-          >
-            Relevant Skills
-          </motion.h2>
+          {labels['industry-skills'] && (
+            <motion.h2
+              {...fadeUpStagger(content.testimonials ? 9 : 7)}
+              className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12"
+            >
+              {labels['industry-skills']}
+            </motion.h2>
+          )}
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {content.relevantSkills.map((skill, index) => (

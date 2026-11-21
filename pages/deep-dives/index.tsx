@@ -4,15 +4,15 @@ import { motion } from 'motion/react';
 import Layout from '../../components/Layout';
 import FloatingButton from '../../components/FloatingButton';
 import ProductCard from '../../components/ProductCard';
-import { getGlobalContent, getListedProductBriefs, getListedCaseStudies, getPageContent } from '../../lib/contentParser';
-import { GlobalContent, DeepDiveContent } from '../../lib/types';
+import { getGlobalContent, getListedProductBriefs, getListedCaseStudies, getPageLabels } from '../../lib/contentParser';
+import { GlobalContent, DeepDiveContent, PageLabels } from '../../lib/types';
 import { fadeUp, fadeUpStagger, MOTION_DURATION } from '../../lib/motion';
 
 interface DeepDivesPageProps {
   globalContent: GlobalContent;
   productBriefs: DeepDiveContent[];
   caseStudies: DeepDiveContent[];
-  labels: Record<string, string>;
+  labels: PageLabels<'deep-dives'>;
 }
 
 const DeepDivesPage: React.FC<DeepDivesPageProps> = ({ globalContent, productBriefs, caseStudies, labels }) => {
@@ -26,7 +26,7 @@ const DeepDivesPage: React.FC<DeepDivesPageProps> = ({ globalContent, productBri
               {...fadeUp}
               className="text-4xl md:text-5xl font-bold text-gray-900 mb-6"
             >
-              {labels.heading ?? 'Work & Impact'}
+              {labels.heading}
             </motion.h1>
 
             {labels.intro && (
@@ -48,7 +48,7 @@ const DeepDivesPage: React.FC<DeepDivesPageProps> = ({ globalContent, productBri
                 {...fadeUpStagger(2)}
                 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12"
               >
-                {labels['products-heading'] ?? 'Products'}
+                {labels['products-heading']}
               </motion.h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -90,7 +90,7 @@ const DeepDivesPage: React.FC<DeepDivesPageProps> = ({ globalContent, productBri
 
                       <div className="mt-auto">
                         <FloatingButton href={`/deep-dives/${product.id}`} size="sm" className="w-full">
-                          {labels['product-button'] ?? 'View Product Brief'}
+                          {labels['product-button']}
                         </FloatingButton>
                       </div>
                     </div>
@@ -109,7 +109,7 @@ const DeepDivesPage: React.FC<DeepDivesPageProps> = ({ globalContent, productBri
                 {...fadeUpStagger(productBriefs.length > 0 ? 4 : 2)}
                 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12"
               >
-                {labels['case-studies-heading'] ?? 'Case Studies'}
+                {labels['case-studies-heading']}
               </motion.h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -151,7 +151,7 @@ const DeepDivesPage: React.FC<DeepDivesPageProps> = ({ globalContent, productBri
 
                       <div className="mt-auto">
                         <FloatingButton href={`/deep-dives/${caseStudy.id}`} size="sm" className="w-full">
-                          {labels['case-study-button'] ?? 'Read Case Study'}
+                          {labels['case-study-button']}
                         </FloatingButton>
                       </div>
                     </div>
@@ -169,7 +169,7 @@ const DeepDivesPage: React.FC<DeepDivesPageProps> = ({ globalContent, productBri
               {...fadeUpStagger(3)}
             >
               <FloatingButton href="/" variant="secondary" size="lg">
-                {labels['back-button'] ?? 'Back to Home'}
+                {labels['back-button']}
               </FloatingButton>
             </motion.div>
           </div>
@@ -183,7 +183,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const globalContent = await getGlobalContent();
   const productBriefs = await getListedProductBriefs();
   const caseStudies = await getListedCaseStudies();
-  const labels = (await getPageContent('deep-dives'))?.labels ?? {};
+  const labels = await getPageLabels('deep-dives');
 
   return {
     props: {

@@ -27,6 +27,87 @@ export interface SeoContent {
   pages: Record<string, PageMeta>;
 }
 
+// Every site-wide UI label the code reads from <ui-labels> in global-elements.xml.
+// Adding a key here requires a default in sample/content/global-elements.xml;
+// the parser fails the build if the sample lacks one. Text in {braces} is a
+// placeholder filled at render time (see lib/labels.ts).
+export const UI_LABEL_KEYS = [
+  // Layout, navigation, shared image components
+  'skip-link',
+  'footer-privacy',
+  'footer-contact',
+  'footer-rights',
+  'last-updated',
+  'nav-toggle-menu',
+  'headshot-alt',
+  'headshot-placeholder',
+  'hero-image-alt',
+  'image-close',
+  // Blog
+  'read-more',
+  'min-read',
+  'blog-back',
+  'prompt-copy',
+  'prompt-show-comment',
+  'prompt-hide-comment',
+  // Testimonials
+  'testimonials-heading',
+  'testimonials-previous',
+  'testimonials-next',
+  'testimonials-page',
+  'testimonial-image-alt',
+  'testimonial-placeholder',
+  // Deep dive template
+  'deep-dive-brief-badge',
+  'deep-dive-role',
+  'deep-dive-company',
+  'deep-dive-timeframe',
+  'deep-dive-stakes',
+  'deep-dive-challenge',
+  'deep-dive-problem',
+  'deep-dive-opportunity',
+  'deep-dive-approach',
+  'deep-dive-build',
+  'deep-dive-results',
+  'deep-dive-achieved',
+  'deep-dive-evidence',
+  'deep-dive-email-subject',
+  'deep-dive-meta-description',
+  'deep-dive-meta-keywords',
+  // Industry landing template
+  'industry-relevance',
+  'industry-achievements',
+  'industry-more-work',
+  'industry-skills',
+  'industry-meta-title',
+  'industry-meta-description',
+  'industry-meta-keywords',
+  // Hello page fallbacks
+  'hello-fallback-heading',
+  'hello-fallback-message'
+] as const;
+
+export type UiLabelKey = (typeof UI_LABEL_KEYS)[number];
+export type UiLabels = Record<UiLabelKey, string>;
+
+// Per-page <labels> keys in pages.xml. `required` keys always resolve (owner's
+// text, else the sample's). `optional` keys never fall back to the sample,
+// because the sample's text there is persona copy; the page hides them when absent.
+export const PAGE_LABEL_KEYS = {
+  about: { required: ['heading'], optional: [] },
+  projects: { required: ['heading'], optional: [] },
+  blog: { required: ['heading', 'empty'], optional: ['intro', 'footer-note', 'footer-link'] },
+  'deep-dives': {
+    required: ['heading', 'products-heading', 'product-button', 'case-studies-heading', 'case-study-button', 'back-button'],
+    optional: ['intro']
+  }
+} as const;
+
+export type LabelledPageId = keyof typeof PAGE_LABEL_KEYS;
+export type PageLabels<P extends LabelledPageId> =
+  Record<(typeof PAGE_LABEL_KEYS)[P]['required'][number], string> &
+  Partial<Record<(typeof PAGE_LABEL_KEYS)[P]['optional'][number], string>>;
+
 export interface GlobalContent {
   siteTitle: string;
   tagline: string;
@@ -38,7 +119,7 @@ export interface GlobalContent {
   navigation: NavigationItem[];
   // Site-wide UI labels: <ui-labels><label key="...">text</label></ui-labels>.
   // Always complete: keys missing from the owner's file are filled from sample/content.
-  uiLabels: Record<string, string>;
+  uiLabels: UiLabels;
   buttons: {
     ctaPrimary: string;
     ctaSecondary: string;
@@ -196,7 +277,7 @@ export interface PageContent {
     primaryButton: string;
     primaryHref: string;
   };
-  labels?: Record<string, string>; // <labels><label key="...">text</label></labels>; used by the blog and deep-dives index pages
+  labels?: Record<string, string>; // <labels><label key="...">text</label></labels>; pages read it through getPageLabels()
   notFound?: {
     heading: string;
     message: string;

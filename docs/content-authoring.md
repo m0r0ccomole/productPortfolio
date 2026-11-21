@@ -38,19 +38,50 @@ After any content change, the build regenerates static pages. See [`development.
 | `<navigation>`, `<buttons>`, `<cta-content>` | yes | Nav links and CTA copy |
 | `<ui-labels>` | no | Small UI labels shared across pages, one `<label key="…">` per label. See below. |
 
-**UI labels.** `<ui-labels>` holds generic interface text that is not tied to one page:
+**UI labels.** `<ui-labels>` holds generic interface text that is not tied to one page: section headings in the templates, footer links, button titles and screen-reader labels.
 
 ```xml
 <ui-labels>
   <label key="read-more">Read more →</label>
+  <label key="min-read">{minutes} min read</label>
 </ui-labels>
 ```
 
-| Key | Used for |
-|---|---|
-| `read-more` | Link text on each blog listing card |
+Every key is optional. If your `content/global-elements.xml` has no `<ui-labels>` block, or leaves a key out, the build takes that label from `sample/content/global-elements.xml`. Pulling an upstream update that adds a label therefore needs no change to your content. Add a key to your own file only when you want different wording. A key that is present but empty stays empty, which hides that text. Words in `{braces}` are placeholders the site fills in; keep the ones you want shown. The build warns about a key it does not recognise.
 
-Every key is optional. If your `content/global-elements.xml` has no `<ui-labels>` block, or leaves a key out, the build takes that label from `sample/content/global-elements.xml`. Pulling an upstream update that adds a label therefore needs no change to your content. Add the key to your own file only when you want different wording.
+| Key | Used for | Placeholders |
+|---|---|---|
+| `skip-link` | Keyboard "skip to content" link at the top of every page | |
+| `footer-privacy`, `footer-contact` | Footer links | |
+| `footer-rights` | Text after the copyright line in the footer | |
+| `last-updated` | Prefix before the date in the footer and on the privacy page | |
+| `nav-toggle-menu` | Screen-reader label of the mobile menu button | |
+| `headshot-alt`, `headshot-placeholder` | Headshot alt text when `<headshot-alt>` is not set | |
+| `hero-image-alt` | About page hero alt text when `<hero-image-alt>` is not set | |
+| `image-close` | Screen-reader label of the close button on an enlarged case study image | |
+| `read-more` | Link text on each blog listing card | |
+| `min-read` | Reading time on blog posts and case studies | `{minutes}` |
+| `blog-back` | Link back to the blog index under a post | |
+| `prompt-copy`, `prompt-show-comment`, `prompt-hide-comment` | Button tooltips on prompt blocks | |
+| `testimonials-heading` | Heading of the testimonials section | |
+| `testimonials-previous`, `testimonials-next`, `testimonials-page` | Screen-reader labels of the carousel controls | `{page}` |
+| `testimonial-image-alt`, `testimonial-placeholder` | Testimonial photo alt text when `<image-alt>` is not set | `{name}` |
+| `deep-dive-brief-badge` | Badge shown on product briefs in place of the reading time | |
+| `deep-dive-role`, `deep-dive-company`, `deep-dive-timeframe` | Context card headings | |
+| `deep-dive-stakes`, `deep-dive-challenge` | Fourth context heading (case study, product brief) | |
+| `deep-dive-problem`, `deep-dive-opportunity` | Problem section heading (case study, product brief) | |
+| `deep-dive-approach`, `deep-dive-build` | Process section heading (case study, product brief) | |
+| `deep-dive-results`, `deep-dive-achieved` | Results section heading (case study, product brief) | |
+| `deep-dive-evidence` | Image gallery heading on case studies | |
+| `deep-dive-email-subject` | Subject of the email the CTA button opens | `{title}` |
+| `deep-dive-meta-description`, `deep-dive-meta-keywords` | Meta description and keywords of each deep dive | `{summary}`, `{company}`, `{id}` |
+| `industry-relevance`, `industry-achievements`, `industry-skills` | Section headings on industry pages | |
+| `industry-more-work` | Link under the product cards on industry pages | |
+| `industry-meta-title`, `industry-meta-description`, `industry-meta-keywords` | Page title, meta description and keywords of each industry page | `{industry}`, `{owner}`, `{id}` |
+| `hello-fallback-heading` | `/hello` greeting when `<generic-greeting>` or the whole hello page is missing | |
+| `hello-fallback-message` | Line under that greeting when the hello page is missing | |
+
+**What falls back to the sample.** Only generic interface text does: `<ui-labels>`, the required page `<labels>` keys listed under each page below, and the fixed-label elements `<timeline-heading>`, `<project-labels>`, `<closing-cta>`, `<retired-projects><heading>`, the privacy `<title>`, `<not-found>`, and `<read-more-label>` and `<closing-hook><email-subject>` on the hello page. Your own copy (intros, case studies, greetings) never falls back to the sample persona.
 
 ## Blog posts
 
@@ -168,7 +199,7 @@ Each `<page id="…">` in `content/industry-pages.xml` (except `hello`) becomes 
 - `products-built` *(optional)* — product cards (`id`, `name`, `year`, `metric`, `metric-label`, `image`, `image-alt`), each `id` referencing a deep dive
 - `testimonials` *(optional)* — `<selected-ids>` list referencing entries in `testimonials.xml`
 
-The `hello` page in the same file drives `/hello`, the email-signature landing. It is personalized via the `?name=` URL param (`{firstName}` in `<personalized-greeting>` is replaced). It also takes `<read-more-label>` for the quick-link badges and `<email-subject>` inside `<closing-hook>`.
+The `hello` page in the same file drives `/hello`, the email-signature landing. It is personalized via the `?name=` URL param (`{firstName}` in `<personalized-greeting>` is replaced). It also takes `<read-more-label>` for the quick-link badges and `<email-subject>` inside `<closing-hook>`. If the hello page is missing from the file, `/hello` shows the `hello-fallback-heading` and `hello-fallback-message` UI labels.
 
 ## Testimonials
 
@@ -198,6 +229,15 @@ All live in `content/pages.xml`.
 ```xml
 <company url="https://www.example.com">Example Corp</company>
 ```
+
+**Index pages.** `page id="blog"` and `page id="deep-dives"` hold the labels of `/blog` and `/deep-dives` in a `<labels>` list of `<label key="…">` entries. Required keys fall back to the sample when missing. Optional keys are hidden when missing.
+
+| Page | Required keys | Optional keys |
+|---|---|---|
+| `blog` | `heading`, `empty` (shown when there are no posts) | `intro`, `footer-note`, `footer-link` |
+| `deep-dives` | `heading`, `products-heading`, `product-button`, `case-studies-heading`, `case-study-button`, `back-button` | `intro` |
+| `about` | `heading` (used only when `<intro><greeting>` is missing) | |
+| `projects` | `heading` (used only when `<intro><title>` is missing) | |
 
 **Projects labels.** `<project-labels>` (`tech-stack`, `key-features`, `retired`, `post-mortem`) and `<closing-cta>` (`heading`, `<primary-button href="…">`) hold the page's fixed labels.
 

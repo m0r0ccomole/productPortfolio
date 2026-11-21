@@ -19,12 +19,8 @@ interface NotFoundPageProps {
 }
 
 const Custom404: React.FC<NotFoundPageProps> = ({ globalContent, pageContent }) => {
-  const copy = pageContent?.notFound ?? {
-    heading: 'Page Not Found',
-    message: 'Looks like this page took a different path.',
-    primaryButton: 'Go Home',
-    secondaryButton: 'About'
-  };
+  // The parser fills <not-found> from sample/content when the owner's page lacks it
+  const copy = pageContent?.notFound;
 
   return (
     <Layout globalContent={globalContent} metaKey="not-found">
@@ -33,18 +29,18 @@ const Custom404: React.FC<NotFoundPageProps> = ({ globalContent, pageContent }) 
           <motion.div {...fadeUp}>
             <h1 className="text-9xl font-bold text-primary-600 mb-4">404</h1>
             <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              {copy.heading}
+              {copy?.heading}
             </h2>
             <p className="text-lg text-gray-600 mb-8">
-              {copy.message}
+              {copy?.message}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <FloatingButton href="/" size="lg">
-                {copy.primaryButton}
+                {copy?.primaryButton}
               </FloatingButton>
               <FloatingButton href="/about" variant="secondary" size="lg">
-                {copy.secondaryButton}
+                {copy?.secondaryButton}
               </FloatingButton>
             </div>
           </motion.div>

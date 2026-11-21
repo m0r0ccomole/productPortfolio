@@ -1,20 +1,22 @@
 // ROLE: building block
 // PURPOSE: Reusable testimonials section with optional carousel.
-// CONTENT: none of its own — receives a TestimonialsSection prop. ("What Others Say" heading is a component default.)
+// CONTENT: none of its own. Receives a TestimonialsSection prop, and its heading and aria labels from <ui-labels> in content/global-elements.xml.
 // SAFE TO RESTYLE: layout, spacing, semantic color tokens, motion tokens.
 // DO NOT: hardcode content copy here, fetch content here.
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { TestimonialsSection } from '../lib/types';
+import { TestimonialsSection, UiLabels } from '../lib/types';
+import { fillLabel } from '../lib/labels';
 import { fadeUp, fadeUpStagger, carouselSlide, MOTION_DURATION } from '../lib/motion';
 
 interface TestimonialsProps {
   testimonialsSection: TestimonialsSection;
+  labels: UiLabels;
   className?: string;
 }
 
-const Testimonials: React.FC<TestimonialsProps> = ({ testimonialsSection, className = '' }) => {
+const Testimonials: React.FC<TestimonialsProps> = ({ testimonialsSection, labels, className = '' }) => {
   const { testimonials, selectedIds } = testimonialsSection;
   
   // Filter testimonials if selectedIds are provided
@@ -62,14 +64,14 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonialsSection, classN
             <div className="w-16 h-16 rounded-full overflow-hidden shadow-lg">
               <img
                 src={testimonial.image}
-                alt={testimonial.imageAlt || `${testimonial.name} headshot`}
+                alt={testimonial.imageAlt || fillLabel(labels['testimonial-image-alt'], { name: testimonial.name })}
                 className="w-full h-full object-cover"
               />
             </div>
           ) : (
             <div
               className="w-16 h-16 rounded-full bg-gradient-primary shadow-lg flex items-center justify-center"
-              aria-label={testimonial.imageAlt || `${testimonial.name} profile photo placeholder`}
+              aria-label={testimonial.imageAlt || fillLabel(labels['testimonial-placeholder'], { name: testimonial.name })}
             >
               <span className="text-white font-bold text-lg">
                 {testimonial.name.split(' ').map((n: string) => n[0]).join('')}
@@ -101,12 +103,14 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonialsSection, classN
   return (
     <section className={`px-4 sm:px-6 lg:px-8 py-16 ${className}`}>
       <div className="max-w-6xl mx-auto">
-        <motion.h2
-          {...fadeUp}
-          className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12"
-        >
-          What Others Say
-        </motion.h2>
+        {labels['testimonials-heading'] && (
+          <motion.h2
+            {...fadeUp}
+            className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12"
+          >
+            {labels['testimonials-heading']}
+          </motion.h2>
+        )}
 
         <div className="relative">
           <AnimatePresence mode="wait">
@@ -135,7 +139,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonialsSection, classN
               <button
                 onClick={prevSlide}
                 className="p-2 rounded-full bg-white shadow-lg hover:shadow-xl transition-all duration-300 floating-element"
-                aria-label="Previous testimonials"
+                aria-label={labels['testimonials-previous']}
               >
                 <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -152,7 +156,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonialsSection, classN
                         ? 'bg-gradient-primary scale-110' 
                         : 'bg-gray-300 hover:bg-gray-400'
                     }`}
-                    aria-label={`Go to testimonials page ${index + 1}`}
+                    aria-label={fillLabel(labels['testimonials-page'], { page: index + 1 })}
                   />
                 ))}
               </div>
@@ -160,7 +164,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonialsSection, classN
               <button
                 onClick={nextSlide}
                 className="p-2 rounded-full bg-white shadow-lg hover:shadow-xl transition-all duration-300 floating-element"
-                aria-label="Next testimonials"
+                aria-label={labels['testimonials-next']}
               >
                 <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

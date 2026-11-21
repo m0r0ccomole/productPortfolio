@@ -1,6 +1,6 @@
 // ROLE: bespoke page
 // PURPOSE: Privacy policy — static prose sections.
-// CONTENT: content/pages.xml (page id="privacy") via getPageContent('privacy').
+// CONTENT: content/pages.xml (page id="privacy") via getPageContent('privacy'); "Last updated:" from <ui-labels> in content/global-elements.xml.
 // SAFE TO RESTYLE: layout, motion tokens, semantic color tokens, spacing.
 // DO NOT: bypass lib/motion.ts or tokens.
 
@@ -18,7 +18,7 @@ interface PrivacyPageProps {
 }
 
 const PrivacyPage: React.FC<PrivacyPageProps> = ({ globalContent, pageContent }) => {
-  const title = pageContent?.privacyContent?.title ?? 'Privacy Policy';
+  const title = pageContent?.privacyContent?.title;
   const sections = pageContent?.privacyContent?.sections ?? [];
 
   return (
@@ -41,7 +41,7 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ globalContent, pageContent })
               {...fadeUpStagger(1)}
               className="text-lg text-gray-600"
             >
-              Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              {globalContent.uiLabels['last-updated']} {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
             </motion.p>
           </div>
         </section>

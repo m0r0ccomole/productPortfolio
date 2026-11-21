@@ -4,9 +4,10 @@ interface CaseStudyImageProps {
   src: string;
   alt: string;
   caption?: string;
+  closeLabel: string; // ui-labels "image-close"
 }
 
-export default function CaseStudyImage({ src, alt, caption }: CaseStudyImageProps) {
+export default function CaseStudyImage({ src, alt, caption, closeLabel }: CaseStudyImageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
@@ -65,7 +66,7 @@ export default function CaseStudyImage({ src, alt, caption }: CaseStudyImageProp
           <button
             onClick={closeModal}
             className="absolute top-4 right-4 z-10 bg-white/10 backdrop-blur-sm rounded-full p-3 text-white hover:bg-white/20 transition-colors duration-200"
-            aria-label="Close modal"
+            aria-label={closeLabel}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

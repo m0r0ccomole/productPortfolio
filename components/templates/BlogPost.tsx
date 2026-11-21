@@ -1,21 +1,23 @@
 // ROLE: template
 // PURPOSE: Renders a single blog post (markdown body + inline prompt blocks).
-// CONTENT: content/blog-markdown/*.md via getBlogPostBySlug(slug).
+// CONTENT: content/blog-markdown/*.md via getBlogPostBySlug(slug); fixed labels from <ui-labels> in content/global-elements.xml.
 // SAFE TO RESTYLE: layout, semantic color tokens, spacing, prose styles.
 // DO NOT: put post copy here (it lives in markdown), bypass semantic color tokens.
 
 import React from 'react';
 import Link from 'next/link';
-import { BlogPost, CodeBlock } from '@/lib/types';
+import { BlogPost, CodeBlock, UiLabels } from '@/lib/types';
 import BlogContent from '@/components/BlogContent';
 import { getReadingTime } from '@/lib/markdownProcessor';
+import { fillLabel } from '@/lib/labels';
 
 interface BlogPostProps {
   post: BlogPost;
   prompts: CodeBlock[];
+  labels: UiLabels;
 }
 
-export default function BlogPostTemplate({ post, prompts }: BlogPostProps) {
+export default function BlogPostTemplate({ post, prompts, labels }: BlogPostProps) {
   // Format date for display
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -46,7 +48,7 @@ export default function BlogPostTemplate({ post, prompts }: BlogPostProps) {
           </span>
           <time className="text-gray-600">{formatDate(post.date)}</time>
           <span className="text-gray-600">•</span>
-          <span className="text-gray-600">{readingTime} min read</span>
+          <span className="text-gray-600">{fillLabel(labels['min-read'], { minutes: readingTime })}</span>
         </div>
       </header>
 
@@ -56,6 +58,7 @@ export default function BlogPostTemplate({ post, prompts }: BlogPostProps) {
           <BlogContent 
             htmlContent={post.htmlContent}
             prompts={prompts}
+            labels={labels}
           />
         )}
       </div>
@@ -66,7 +69,7 @@ export default function BlogPostTemplate({ post, prompts }: BlogPostProps) {
           href="/blog" 
           className="inline-flex items-center text-primary-500 hover:text-primary-600 transition-colors"
         >
-          ← Back to Blog
+          {labels['blog-back']}
         </Link>
       </footer>
       </article>

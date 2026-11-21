@@ -1,6 +1,6 @@
 // ROLE: bespoke page
 // PURPOSE: Email-signature landing page with personalized greeting (?name=).
-// CONTENT: content/industry-pages.xml (page id="hello") via getPageContent('hello').
+// CONTENT: content/industry-pages.xml (page id="hello") via getPageContent('hello'); fallback greeting from <ui-labels> in content/global-elements.xml.
 // SAFE TO RESTYLE: layout, motion tokens, semantic color tokens, spacing.
 // DO NOT: bypass lib/motion.ts or tokens.
 
@@ -26,6 +26,7 @@ const HelloPage: React.FC<HelloPageProps> = ({ globalContent, pageContent }) => 
   const router = useRouter();
   const nameParam = router.isReady ? router.query.name : undefined;
   const firstName = typeof nameParam === 'string' ? nameParam : '';
+  const labels = globalContent.uiLabels;
 
   // Handle null pageContent
   if (!pageContent) {
@@ -36,8 +37,8 @@ const HelloPage: React.FC<HelloPageProps> = ({ globalContent, pageContent }) => 
       >
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Hello there!</h1>
-            <p className="text-lg text-gray-600">Thanks for visiting.</p>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">{labels['hello-fallback-heading']}</h1>
+            <p className="text-lg text-gray-600">{labels['hello-fallback-message']}</p>
           </div>
         </div>
       </Layout>
@@ -46,7 +47,7 @@ const HelloPage: React.FC<HelloPageProps> = ({ globalContent, pageContent }) => 
 
   const greeting = firstName 
     ? pageContent.personalizedGreeting?.replace('{firstName}', firstName)
-    : pageContent.genericGreeting || 'Hello there!';
+    : pageContent.genericGreeting || labels['hello-fallback-heading'];
 
   return (
     <Layout 
@@ -117,7 +118,7 @@ const HelloPage: React.FC<HelloPageProps> = ({ globalContent, pageContent }) => 
                           </div>
                           <div className="flex-shrink-0">
                             <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent-100 text-accent-700 group-hover:bg-accent-200 transition-colors">
-                              {pageContent.readMoreLabel ?? 'Read More →'}
+                              {pageContent.readMoreLabel}
                             </span>
                           </div>
                         </div>
@@ -146,7 +147,7 @@ const HelloPage: React.FC<HelloPageProps> = ({ globalContent, pageContent }) => 
                 className="flex flex-col sm:flex-row gap-4 justify-center"
               >
                 <FloatingButton 
-                  href={`mailto:${globalContent.contactEmail}?subject=${encodeURIComponent(pageContent.closingHook.emailSubject ?? 'Following up from your website')}`}
+                  href={`mailto:${globalContent.contactEmail}?subject=${encodeURIComponent(pageContent.closingHook.emailSubject ?? '')}`}
                   size="lg"
                 >
                   {pageContent.closingHook.ctaText}

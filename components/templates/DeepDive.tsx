@@ -1,7 +1,7 @@
 // ROLE: template
 // PURPOSE: Renders a case study or product brief from a DeepDiveContent object.
-// CONTENT: content/deep-dives.xml via getDeepDiveContent(id); CTA copy from content/global-elements.xml.
-// SAFE TO RESTYLE: layout, motion tokens, semantic color tokens, spacing. Section headings are template defaults.
+// CONTENT: content/deep-dives.xml via getDeepDiveContent(id); CTA copy and section headings (<ui-labels>) from content/global-elements.xml.
+// SAFE TO RESTYLE: layout, motion tokens, semantic color tokens, spacing.
 // DO NOT: put per-page copy here (it belongs in deep-dives.xml), bypass tokens or lib/motion.ts.
 
 import React from 'react';
@@ -12,6 +12,7 @@ import CaseStudyImage from '../CaseStudyImage';
 import CTASection from '../CTASection';
 import { DeepDiveContent, GlobalContent, CTAConfig } from '../../lib/types';
 import { fadeUp, fadeUpStagger, slideInLeft, MOTION_DURATION } from '../../lib/motion';
+import { fillLabel } from '../../lib/labels';
 
 interface DeepDiveProps {
   content: DeepDiveContent;
@@ -22,11 +23,14 @@ const DeepDive: React.FC<DeepDiveProps> = ({ content, globalContent }) => {
   const estimatedReadTime = Math.ceil(content.title.length / 200) + 3; // Rough estimate
   const isProductBrief = content.type === 'product-brief';
   const cta = globalContent.ctaContent;
+  const labels = globalContent.uiLabels;
+  const processHeading = isProductBrief ? labels['deep-dive-build'] : labels['deep-dive-approach'];
+  const resultsHeading = isProductBrief ? labels['deep-dive-achieved'] : labels['deep-dive-results'];
 
   // Generate contextual CTA. Copy comes from global-elements.xml; the per-page
   // related-work link comes from the deep-dive's own <related-work> in deep-dives.xml.
   const generateCTA = (deepDiveContent: DeepDiveContent): CTAConfig => {
-    const baseEmailSubject = `Discussion: ${deepDiveContent.title}`;
+    const baseEmailSubject = fillLabel(labels['deep-dive-email-subject'], { title: deepDiveContent.title });
     const emailHref = `mailto:${globalContent.contactEmail}?subject=${encodeURIComponent(baseEmailSubject)}`;
 
     const relatedWork = deepDiveContent.relatedWork ?? {
@@ -59,7 +63,7 @@ const DeepDive: React.FC<DeepDiveProps> = ({ content, globalContent }) => {
               {content.title}
             </h1>
             <p className="text-lg text-gray-600">
-              {isProductBrief ? 'Product Brief' : `${estimatedReadTime} min read`} • {content.context.company} • {content.context.timeframe}
+              {isProductBrief ? labels['deep-dive-brief-badge'] : fillLabel(labels['min-read'], { minutes: estimatedReadTime })} • {content.context.company} • {content.context.timeframe}
             </p>
           </motion.div>
           
@@ -73,6 +77,7 @@ const DeepDive: React.FC<DeepDiveProps> = ({ content, globalContent }) => {
                 src={content.images[0].src}
                 alt={content.images[0].alt}
                 caption={content.images[0].caption}
+                closeLabel={labels['image-close']}
               />
             </motion.div>
           )}
@@ -83,18 +88,18 @@ const DeepDive: React.FC<DeepDiveProps> = ({ content, globalContent }) => {
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Role</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{labels['deep-dive-role']}</h3>
                 <p className="text-gray-600 mb-4">{content.context.role}</p>
                 
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Company</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{labels['deep-dive-company']}</h3>
                 <p className="text-gray-600">{content.context.company}</p>
               </div>
               
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Timeframe</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{labels['deep-dive-timeframe']}</h3>
                 <p className="text-gray-600 mb-4">{content.context.timeframe}</p>
                 
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{isProductBrief ? 'Challenge' : 'Stakes'}</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{isProductBrief ? labels['deep-dive-challenge'] : labels['deep-dive-stakes']}</h3>
                 <p className="text-gray-600">{content.context.stakes}</p>
               </div>
             </div>
@@ -110,9 +115,11 @@ const DeepDive: React.FC<DeepDiveProps> = ({ content, globalContent }) => {
               {...fadeUpStagger(2)}
               className="bg-white rounded-2xl shadow-float p-8 md:p-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                The Problem
-              </h2>
+              {labels['deep-dive-problem'] && (
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                  {labels['deep-dive-problem']}
+                </h2>
+              )}
               <p className="text-xl text-gray-700 mb-8 leading-relaxed">
                 {content.problem.summary}
               </p>
@@ -143,9 +150,11 @@ const DeepDive: React.FC<DeepDiveProps> = ({ content, globalContent }) => {
               {...fadeUpStagger(3)}
               className="bg-white rounded-2xl shadow-float p-8 md:p-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                The Opportunity
-              </h2>
+              {labels['deep-dive-opportunity'] && (
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                  {labels['deep-dive-opportunity']}
+                </h2>
+              )}
               <p className="text-xl text-gray-700 mb-8 leading-relaxed">
                 {content.problem.summary}
               </p>
@@ -157,12 +166,14 @@ const DeepDive: React.FC<DeepDiveProps> = ({ content, globalContent }) => {
       {/* Process */}
       <section className="px-4 sm:px-6 lg:px-8 py-16">
         <div className="max-w-4xl mx-auto">
-          <motion.h2
-            {...fadeUpStagger(4)}
-            className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12"
-          >
-            {isProductBrief ? 'How We Built It' : 'My Approach'}
-          </motion.h2>
+          {processHeading && (
+            <motion.h2
+              {...fadeUpStagger(4)}
+              className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12"
+            >
+              {processHeading}
+            </motion.h2>
+          )}
           
           <div className={isProductBrief ? 'grid grid-cols-1 md:grid-cols-2 gap-8' : 'space-y-8'}>
             {content.process.map((phase, phaseIndex) => (
@@ -204,12 +215,14 @@ const DeepDive: React.FC<DeepDiveProps> = ({ content, globalContent }) => {
       {/* Results */}
       <section className="px-4 sm:px-6 lg:px-8 py-16">
         <div className="max-w-6xl mx-auto">
-          <motion.h2
-            {...fadeUpStagger(8)}
-            className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12"
-          >
-            {isProductBrief ? 'What We Achieved' : 'Results'}
-          </motion.h2>
+          {resultsHeading && (
+            <motion.h2
+              {...fadeUpStagger(8)}
+              className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12"
+            >
+              {resultsHeading}
+            </motion.h2>
+          )}
           
           <div className={`grid gap-6 ${
             content.results.length <= 2 
@@ -232,12 +245,14 @@ const DeepDive: React.FC<DeepDiveProps> = ({ content, globalContent }) => {
       {!isProductBrief && content.images && content.images.length > 0 && (
         <section className="px-4 sm:px-6 lg:px-8 py-16">
           <div className="max-w-6xl mx-auto">
-            <motion.h2
-              {...fadeUpStagger(7)}
-              className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12"
-            >
-             Evidence you can see in action
-            </motion.h2>
+            {labels['deep-dive-evidence'] && (
+              <motion.h2
+                {...fadeUpStagger(7)}
+                className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12"
+              >
+                {labels['deep-dive-evidence']}
+              </motion.h2>
+            )}
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {content.images.map((image, index) => (
@@ -250,6 +265,7 @@ const DeepDive: React.FC<DeepDiveProps> = ({ content, globalContent }) => {
                     src={image.src}
                     alt={image.alt}
                     caption={image.caption}
+                    closeLabel={labels['image-close']}
                   />
                 </motion.div>
               ))}

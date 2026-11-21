@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { motion, AnimatePresence } from 'motion/react';
 import Headshot from './Headshot';
+import { UiLabels } from '../lib/types';
 
 interface NavigationProps {
   navigation: {
@@ -14,9 +15,10 @@ interface NavigationProps {
     headshot?: string;
     headshotAlt?: string;
   };
+  labels: UiLabels;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ navigation, siteTitle, globalImages }) => {
+const Navigation: React.FC<NavigationProps> = ({ navigation, siteTitle, globalImages, labels }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const router = useRouter();
@@ -78,6 +80,7 @@ const Navigation: React.FC<NavigationProps> = ({ navigation, siteTitle, globalIm
             <Headshot
               src={globalImages?.headshot}
               alt={globalImages?.headshotAlt}
+              labels={labels}
               size="small"
             />
           </div>
@@ -87,12 +90,13 @@ const Navigation: React.FC<NavigationProps> = ({ navigation, siteTitle, globalIm
             <Headshot
               src={globalImages?.headshot}
               alt={globalImages?.headshotAlt}
+              labels={labels}
               size="small"
             />
             <button
               onClick={toggleMenu}
               className="flex items-center justify-center w-10 h-10 text-gray-700 hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md"
-              aria-label="Toggle menu"
+              aria-label={labels['nav-toggle-menu']}
             >
               <svg
                 className="w-6 h-6"

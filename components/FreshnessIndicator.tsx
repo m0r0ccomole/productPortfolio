@@ -1,10 +1,12 @@
 import React from 'react';
 
 interface FreshnessIndicatorProps {
+  label: string; // ui-labels "last-updated"
   lastUpdated?: string;
 }
 
-const FreshnessIndicator: React.FC<FreshnessIndicatorProps> = ({ 
+const FreshnessIndicator: React.FC<FreshnessIndicatorProps> = ({
+  label,
   lastUpdated = process.env.LAST_UPDATED as string
 }) => {
   const getStatusColor = (dateString: string) => {
@@ -42,7 +44,7 @@ const FreshnessIndicator: React.FC<FreshnessIndicatorProps> = ({
   return (
     <div className="flex items-center space-x-2 text-sm text-gray-600">
       <div className={`w-2 h-2 rounded-full ${getStatusColor(lastUpdated)}`} />
-      <span>Last updated: {formatDate(lastUpdated)}</span>
+      <span>{label} {formatDate(lastUpdated)}</span>
     </div>
   );
 };

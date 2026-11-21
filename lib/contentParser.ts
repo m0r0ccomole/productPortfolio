@@ -19,7 +19,12 @@ import {
   BlogPost,
   CommentBlock,
   Project,
-  RetiredProject
+  RetiredProject,
+  UiLabels,
+  UI_LABEL_KEYS,
+  PAGE_LABEL_KEYS,
+  LabelledPageId,
+  PageLabels
 } from './types';
 import { processMarkdown, getReadingTime } from './markdownProcessor';
 
@@ -47,9 +52,15 @@ function contentPath(...parts: string[]): string {
 // Upstream adds new optional fields to sample/content first. A site owner's
 // content/ predates them, so the parser reads the sample copy of the same file
 // to fill whatever the owner's file lacks. This keeps default copy in XML, not in code.
+// Only generic UI text falls back this way; persona copy in the sample never does.
 const cachedSampleXml: Record<string, Promise<any>> = {};
 
 function parseSampleXml(file: string): Promise<any> {
+  // Clear cache in development/build to always read fresh XML
+  if (process.env.NODE_ENV !== 'production') {
+    delete cachedSampleXml[file];
+  }
+
   if (!cachedSampleXml[file]) {
     cachedSampleXml[file] = fs
       .readFile(join(process.cwd(), 'sample', 'content', file), 'utf8')
@@ -63,6 +74,15 @@ function parseSampleXml(file: string): Promise<any> {
   return cachedSampleXml[file];
 }
 
+// The sample is the source of defaults, so a default missing from it is an
+// upstream bug. Fail the build instead of rendering a blank.
+function missingSampleDefault(file: string, what: string): Error {
+  return new Error(
+    `[content] sample/content/${file} is missing ${what}. ` +
+    'Every label the code declares needs a default in sample/content.'
+  );
+}
+
 // Reads a keyed label list: <label key="...">text</label> children of the given node.
 function readLabels(node: any): Record<string, string> {
   return Object.fromEntries(
@@ -70,20 +90,74 @@ function readLabels(node: any): Record<string, string> {
   );
 }
 
-// Merges the owner's labels over the sample's. `pick` selects the same label
-// container node from either parsed file. A key the owner defines always wins,
-// a key the owner lacks takes the sample text.
-async function labelsWithSampleFallback(
+// Returns the owner's labels, with each key in `keys` that the owner's file
+// lacks filled from the sample. `pick` selects the same label container node
+// from either parsed file. A key the owner defines always wins, even when
+// empty. Keys outside `keys` are passed through but never filled.
+async function labelsWithSampleFallback<K extends string>(
   file: string,
   ownerRoot: any,
-  pick: (root: any) => any
-): Promise<Record<string, string>> {
-  const owner = readLabels(pick(ownerRoot));
-  if (usingSampleContent) {
-    return owner;
+  pick: (root: any) => any,
+  keys: readonly K[],
+  where: string
+): Promise<Record<K, string> & Record<string, string>> {
+  const labels = readLabels(pick(ownerRoot));
+  const missing = keys.filter((key) => !(key in labels));
+  if (missing.length > 0) {
+    const sample = usingSampleContent ? {} : readLabels(pick(await parseSampleXml(file)));
+    for (const key of missing) {
+      if (!(key in sample)) {
+        throw missingSampleDefault(file, `<label key="${key}"> in ${where}`);
+      }
+      labels[key] = sample[key];
+    }
   }
-  return { ...readLabels(pick(await parseSampleXml(file))), ...owner };
+  return labels as Record<K, string> & Record<string, string>;
 }
+
+// Finds <page id="..."> in a parsed pages.xml or industry-pages.xml.
+function findPage(root: any, rootKey: string, pageId: string): any {
+  return (root?.[rootKey]?.page ?? []).find((p: any) => p.$?.id === pageId);
+}
+
+// The sample's copy of a page, for filling generic elements the owner's page
+// lacks. Undefined when the build is already reading the sample.
+async function findSamplePage(file: string, rootKey: string, pageId: string): Promise<any> {
+  return usingSampleContent ? undefined : findPage(await parseSampleXml(file), rootKey, pageId);
+}
+
+// Returns the page with each element in `elements` that the owner's page lacks
+// copied from the sample's page of the same id. List only elements whose
+// sample text is generic UI copy.
+async function pageWithSampleElements(
+  file: string,
+  rootKey: string,
+  pageId: string,
+  page: any,
+  elements: readonly string[]
+): Promise<any> {
+  const missing = elements.filter((el) => !page[el]);
+  if (missing.length === 0) {
+    return page;
+  }
+  const samplePage = await findSamplePage(file, rootKey, pageId);
+  const filled = { ...page };
+  for (const el of missing) {
+    if (!samplePage?.[el]) {
+      throw missingSampleDefault(file, `<${el}> in <page id="${pageId}">`);
+    }
+    filled[el] = samplePage[el];
+  }
+  return filled;
+}
+
+// Generic elements of each static page that fall back to the sample.
+const SAMPLE_FALLBACK_ELEMENTS: Record<string, readonly string[]> = {
+  about: ['timeline-heading'],
+  projects: ['project-labels', 'closing-cta'],
+  privacy: ['title'],
+  'not-found': ['not-found']
+};
 
 // NEW: Parse global elements from separate file
 async function parseGlobalElementsContent(): Promise<any> {
@@ -117,6 +191,17 @@ async function parseGlobalElementsContent(): Promise<any> {
 }
 
 // NEW: Parse global elements from new structure  
+async function parseUiLabels(content: any): Promise<UiLabels> {
+  const pick = (root: any) => root?.['global-elements']?.global?.[0]?.['ui-labels']?.[0];
+  const known: readonly string[] = UI_LABEL_KEYS;
+  for (const key of Object.keys(readLabels(pick(content)))) {
+    if (!known.includes(key)) {
+      console.warn(`[content] global-elements.xml: <ui-labels> key "${key}" is not used by the site. Check the spelling.`);
+    }
+  }
+  return labelsWithSampleFallback('global-elements.xml', content, pick, UI_LABEL_KEYS, '<ui-labels>');
+}
+
 async function parseGlobalElements(): Promise<GlobalContent> {
   const content = await parseGlobalElementsContent();
   const global = content['global-elements'].global[0];
@@ -132,11 +217,7 @@ async function parseGlobalElements(): Promise<GlobalContent> {
       href: item.$.href,
       text: item._
     })),
-    uiLabels: await labelsWithSampleFallback(
-      'global-elements.xml',
-      content,
-      (root) => root?.['global-elements']?.global?.[0]?.['ui-labels']?.[0]
-    ),
+    uiLabels: await parseUiLabels(content),
     buttons: {
       ctaPrimary: global.buttons[0]['cta-primary'][0],
       ctaSecondary: global.buttons[0]['cta-secondary'][0],
@@ -316,8 +397,19 @@ async function parseStaticPagesFromNewStructure(pageId: string): Promise<PageCon
   const content = await parsePagesContent();
   const pages = content['pages-content'].page;
   
-  const page = pages.find((p: any) => p.$.id === pageId);
-  if (!page) return null;
+  // 404 and privacy are made of generic copy only, so they resolve from the
+  // sample even when the owner's pages.xml has no such page
+  const ownerPage = pages.find((p: any) => p.$.id === pageId)
+    ?? (pageId === 'not-found' || pageId === 'privacy' ? { $: { id: pageId } } : undefined);
+  if (!ownerPage) return null;
+
+  const page = await pageWithSampleElements(
+    'pages.xml',
+    'pages-content',
+    pageId,
+    ownerPage,
+    SAMPLE_FALLBACK_ELEMENTS[pageId] ?? []
+  );
 
   const result: PageContent = { id: pageId };
 
@@ -442,8 +534,17 @@ async function parseStaticPagesFromNewStructure(pageId: string): Promise<PageCon
 
   if (page['retired-projects']) {
     const retired = page['retired-projects'][0];
+    let heading: string | undefined = retired.heading?.[0];
+    if (heading === undefined) {
+      // Generic section heading: take the sample's when the owner's block has none
+      const samplePage = await findSamplePage('pages.xml', 'pages-content', pageId);
+      heading = samplePage?.['retired-projects']?.[0]?.heading?.[0];
+      if (heading === undefined) {
+        throw missingSampleDefault('pages.xml', `<retired-projects><heading> in <page id="${pageId}">`);
+      }
+    }
     result.retiredProjects = {
-      heading: retired.heading?.[0] ?? 'Retired Projects',
+      heading,
       projects: (retired.project ?? []).map((project: any) => {
         const parsed: RetiredProject = {
           ...parseProject(project),
@@ -483,8 +584,15 @@ async function parseStaticPagesFromNewStructure(pageId: string): Promise<PageCon
     };
   }
 
-  if (page.labels) {
-    result.labels = readLabels(page.labels[0]);
+  const labelKeys = pageId in PAGE_LABEL_KEYS ? PAGE_LABEL_KEYS[pageId as LabelledPageId].required : [];
+  if (page.labels || labelKeys.length > 0) {
+    result.labels = await labelsWithSampleFallback(
+      'pages.xml',
+      content,
+      (root) => findPage(root, 'pages-content', pageId)?.labels?.[0],
+      labelKeys,
+      `<page id="${pageId}"><labels>`
+    );
   }
 
   if (page['not-found']) {
@@ -497,10 +605,10 @@ async function parseStaticPagesFromNewStructure(pageId: string): Promise<PageCon
     };
   }
 
-  if (page.content) {
+  if (pageId === 'privacy') {
     result.privacyContent = {
-      title: page.title ? page.title[0] : 'Privacy Policy',
-      sections: page.content[0].section.map((section: any) => ({
+      title: page.title[0],
+      sections: (page.content?.[0]?.section ?? []).map((section: any) => ({
         title: section.h2[0],
         content: section.p[0]
       }))
@@ -614,8 +722,16 @@ async function parseHelloPageFromNewStructure(): Promise<PageContent | null> {
   const content = await parseIndustryPagesContent();
   const pages = content['industry-pages-content'].page;
   
-  const page = pages.find((p: any) => p.$.id === 'hello');
-  if (!page) return null;
+  const ownerPage = pages.find((p: any) => p.$.id === 'hello');
+  if (!ownerPage) return null;
+
+  const page = await pageWithSampleElements(
+    'industry-pages.xml',
+    'industry-pages-content',
+    'hello',
+    ownerPage,
+    ['read-more-label']
+  );
 
   const result: PageContent = {
     id: 'hello'
@@ -641,7 +757,7 @@ async function parseHelloPageFromNewStructure(): Promise<PageContent | null> {
       title: lg.$.title || '',
       links: (lg.link || []).map((l: any) => ({
         href: l.$.href || '#',
-        title: (l.title && l.title[0]) || l._ || 'Link',
+        title: (l.title && l.title[0]) || l._ || '',
         context: (l.context && l.context[0]) || ''
       }))
     }));
@@ -653,11 +769,19 @@ async function parseHelloPageFromNewStructure(): Promise<PageContent | null> {
     if (closingHook.text && closingHook['cta-text'] && closingHook['calendar-text']) {
       result.closingHook = {
         text: closingHook.text[0] || '',
-        ctaText: closingHook['cta-text'][0] || 'Contact Me',
-        calendarText: closingHook['calendar-text'][0] || 'Schedule Time'
+        ctaText: closingHook['cta-text'][0] || '',
+        calendarText: closingHook['calendar-text'][0] || ''
       };
       if (closingHook['email-subject']) {
         result.closingHook.emailSubject = closingHook['email-subject'][0];
+      } else {
+        // Generic mail subject: take the sample's when the owner's block has none
+        const samplePage = await findSamplePage('industry-pages.xml', 'industry-pages-content', 'hello');
+        const subject = samplePage?.['closing-hook']?.[0]?.['email-subject']?.[0];
+        if (subject === undefined) {
+          throw missingSampleDefault('industry-pages.xml', '<closing-hook><email-subject> in <page id="hello">');
+        }
+        result.closingHook.emailSubject = subject;
       }
     }
   }
@@ -815,6 +939,20 @@ export async function getPageContent(pageId: string): Promise<PageContent | null
 
   // Page not found
   return null;
+}
+
+// Typed <labels> for a static page. Required keys are always present.
+export async function getPageLabels<P extends LabelledPageId>(pageId: P): Promise<PageLabels<P>> {
+  const page = await parseStaticPagesFromNewStructure(pageId);
+  // When the owner's pages.xml has no such page, the required labels still resolve from the sample
+  const labels: Record<string, string> = page?.labels ?? await labelsWithSampleFallback(
+    'pages.xml',
+    await parsePagesContent(),
+    (root) => findPage(root, 'pages-content', pageId)?.labels?.[0],
+    PAGE_LABEL_KEYS[pageId].required,
+    `<page id="${pageId}"><labels>`
+  );
+  return labels as unknown as PageLabels<P>;
 }
 
 export async function getAllTestimonials(): Promise<Testimonial[]> {
