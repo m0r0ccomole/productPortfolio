@@ -524,54 +524,42 @@ Use a browser without an ad blocker for this. Ad blockers and some privacy brows
 
 ### Contact button clicks
 
-This part needs one extra step, and you should know why.
+The site sends an event named `cta_click` to Tag Manager every time a visitor presses a button, the footer **Contact** link, or one of the link cards on `/hello`. Tag Manager receives it but does nothing with it until you tell it to forward the event to Analytics. That takes three pieces inside Tag Manager: variables to read the event's details, a trigger that listens for it, and a tag that sends it to GA4.
 
-The site's buttons try to send an event named `cta_click` every time a visitor presses one. The event carries these parameters:
+The event carries these parameters:
 
 | Parameter | Contains |
 |---|---|
-| `destination` | Where the button leads. Contact buttons start with `mailto:`. The calendar button is your scheduling link |
-| `event_label` | A label such as `CTA Section - Primary`, or the destination when the button has no label |
+| `destination` | Where the click leads. Contact buttons and the footer link start with `mailto:`. The calendar button is your scheduling link |
+| `event_label` | A label such as `CTA Section - Primary`, `Footer - Contact` or `Hello - ` followed by the card title, or the destination when the button has no label |
 | `action_type` | `navigation` for buttons that lead somewhere |
-| `page_path` | The page the visitor was on |
+| `page_path` | The page the visitor was on, without the address's `?` part, so a `?name=` value is never included |
 | `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term` | The UTM values in the page address at the moment of the click, or empty |
 
-The code sends the event by calling a function named `gtag`, and it skips the event when that function does not exist. **Google Tag Manager does not create that function.** Only a site that installs Google Analytics directly, without Tag Manager, has it. So with the setup above and nothing more, page views work and `cta_click` is never sent.
+**1. Variables.** In Tag Manager, open **Variables**. Under **User-Defined Variables**, select **New**, choose the type **Data Layer Variable**, and enter `destination` as the **Data Layer Variable Name**. Leave the version at 2. Name the variable `dlv - destination` and **Save**. Repeat for `event_label`, `action_type` and `page_path`. The `utm_*` ones are optional; GA4 already credits each visit to its tagged link (see the last point below).
 
-You can supply the missing function from inside Tag Manager, with no change to the site:
+**2. Trigger.** Open **Triggers** and select **New**. Choose the type **Custom Event**, enter `cta_click` as the **Event name**, leave it firing on **All Custom Events**, name it `cta_click`, and **Save**.
 
-1. In Tag Manager, open **Tags** and select **New**. Name it `gtag helper`.
-2. Choose the tag type **Custom HTML** and paste:
+**3. Tag.** Open **Tags** and select **New**. Name it `GA4 - cta_click`.
 
-   ```html
-   <script>
-     window.gtag = window.gtag || function () { dataLayer.push(arguments); };
-   </script>
-   ```
-
-3. For the trigger, choose **All Pages**.
-4. **Save**, then **Submit** and **Publish**.
+1. Choose the tag type **Google Analytics: GA4 Event** and paste your `G-` Measurement ID.
+2. Enter `cta_click` as the **Event Name**.
+3. Under **Event Parameters**, add one row per variable: `destination` with the value `{{dlv - destination}}`, then the same for `event_label`, `action_type` and `page_path`. Select the variable icon next to the value box to pick them instead of typing.
+4. For **Triggering**, choose the `cta_click` trigger.
+5. **Save**, then **Submit** and **Publish**.
 
 Then check it:
 
-1. Start **Preview** again and click a contact button on your site.
-2. In Analytics, open the **Realtime** report and look at the list of events by name. `cta_click` should appear within a minute or two. **Admin > Data display > DebugView** shows the same event with its parameters while Preview is running.
+1. Start **Preview** and click a contact button on your site. In Tag Assistant, `cta_click` appears in the event list on the left. Select it: your `GA4 - cta_click` tag should be under **Tags Fired**, and the **Variables** tab shows the values it read. A mail window may open; close it.
+2. In Analytics, open **Admin > Data display > DebugView** while Preview is running. `cta_click` shows up with its parameters. The **Realtime** report lists it by name within a minute or two.
 
-**It worked if** `cta_click` shows up in Realtime after you click a button.
-
-This relies on the Google tag picking up events sent through `gtag`. That is common practice, but it is not a setup Google documents for Tag Manager. If `cta_click` does not appear after a few tries, use Tag Manager's own click tracking instead, which does not depend on the site's code:
-
-1. In Tag Manager, open **Variables**, select **Configure** under built-in variables, and turn on **Click URL**.
-2. Create a new tag of type **Google Analytics: GA4 Event**. Enter your `G-` Measurement ID and the event name `contact_click`.
-3. For its trigger, create a new trigger of the type for link clicks (named roughly **Click - Just Links**), set it to fire on some link clicks, with the condition **Click URL** contains `mailto:`.
-4. Save, publish, and check Realtime for `contact_click`.
+**It worked if** `cta_click` shows up in DebugView or Realtime after you click a button.
 
 **To see the parameters in reports,** register the ones you care about as custom dimensions. In Analytics, go to **Admin > Data display > Custom definitions**, select **Create custom dimension**, choose event scope, and enter the parameter name exactly (for example `destination`). `destination` and `event_label` are the two worth registering. Data for a new dimension starts from the day you create it and takes 24 to 48 hours to show.
 
-Three limits to know about:
+Two limits to know about:
 
 - `cta_click` fires for every button on the site, including ones that only move between pages. Contact attempts are the ones whose `destination` starts with `mailto:` or matches your calendar link.
-- The plain "Contact" link in the footer and the link cards on `/hello` are not buttons and do not send the event.
 - The `utm_*` parameters on the event are read from the address bar when the button is pressed. If a visitor lands on a tagged link and then moves to another page before pressing a contact button, those parameters are empty. GA4 still credits the whole visit to the tagged link in its own session reports, so use those for attribution (see [What to look at](#what-to-look-at)).
 
 ### Microsoft Clarity
@@ -596,7 +584,7 @@ Give it a couple of weeks of real applications before you read anything into the
 |---|---|
 | Which resume landing pages get visits? | GA4: **Reports > Engagement > Pages and screens**. Look at the rows for `/resume/…` and `/hello` |
 | Which of my links work? | GA4: **Reports > Acquisition > Traffic acquisition**. Switch the dimension to session source / medium or session campaign to see visits per tagged link |
-| Do visitors press the contact button? | GA4: **Reports > Engagement > Events**, then `cta_click` (or `contact_click`). With the `destination` custom dimension registered, filter to values starting with `mailto:` |
+| Do visitors press the contact button? | GA4: **Reports > Engagement > Events**, then `cta_click`. With the `destination` custom dimension registered, filter to values starting with `mailto:` |
 | What do visitors do before they leave? | Clarity: **Recordings**, filtered to a landing page address. Watch five or six. Look for where people stop scrolling |
 | Is anything being ignored? | Clarity: **Heatmaps** for the home page and each `/resume/…` page |
 
@@ -708,7 +696,7 @@ Live site:
 Analytics, if you use it:
 
 - [ ] The GTM container is published and your own visit shows in GA4 Realtime
-- [ ] A button click shows as `cta_click` (or `contact_click`) in Realtime
+- [ ] A button click shows as `cta_click` in Realtime
 - [ ] Clarity shows a session
 - [ ] The privacy page names the right email and matches the analytics in use
 - [ ] Each link on your resume and in your signature carries UTM parameters, and you have clicked each one
@@ -732,7 +720,7 @@ Analytics, if you use it:
 | Blog post missing from the index | `listed: false`, or a required front matter key is missing (the build prints a warning) |
 | Calendar button missing | There is no `<scheduling-url>` in `global-elements.xml` |
 | GA4 Realtime shows nothing | In order: the variable is named exactly `NEXT_PUBLIC_GTM_ID`; you redeployed after setting it; the page source contains your `GTM-` ID; the GTM container is published; the tag holds the `G-` ID, not the `GTM-` one; your ad blocker is off |
-| Page views work but `cta_click` never appears | Expected until you add the helper tag. See [Contact button clicks](#contact-button-clicks) |
+| Page views work but `cta_click` never appears | The `cta_click` trigger or GA4 event tag is missing, or the container was not published after adding them. See [Contact button clicks](#contact-button-clicks) |
 | Clarity shows nothing | The variable is named exactly `MICROSOFT_CLARITY_ID`, you redeployed, and your ad blocker is off |
 | No update pull requests | The permission in [Turn on update pull requests](#turn-on-update-pull-requests) is not enabled, or the workflow opened an issue instead. Check the repo's Issues tab |
 

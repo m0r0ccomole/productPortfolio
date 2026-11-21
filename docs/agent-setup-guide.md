@@ -341,7 +341,7 @@ If an ID is absent from the page source, the variable name is misspelled or the 
 
 Things to tell them, because the human guide's detail is easy to skim past:
 
-- The `cta_click` button event is not sent with a plain GTM setup. It needs the small helper tag described in [Contact button clicks](setup-guide.md#contact-button-clicks). Do not "fix" this in code or by adding IDs to files.
+- The site pushes `cta_click` to Tag Manager on its own, but GA4 sees nothing until they add the trigger, variables and GA4 event tag in [Contact button clicks](setup-guide.md#contact-button-clicks) and publish. Ask them to confirm `cta_click` in DebugView or Realtime.
 - Each change inside GTM needs a publish.
 
 Then update the privacy page. Draft `page id="privacy"` in `content/pages.xml` to match what is switched on, using [Keep the privacy page accurate](setup-guide.md#keep-the-privacy-page-accurate), and review it with the person as in step 7. This is their statement to visitors; they approve the wording.

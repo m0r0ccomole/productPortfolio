@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { motion } from 'motion/react';
 import { hoverScale } from '../lib/motion';
+import { trackCtaClick } from '../lib/analytics';
 
 interface FloatingButtonProps {
   variant?: 'primary' | 'secondary' | 'accent';
@@ -22,39 +23,11 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
   size = 'md',
   trackingLabel
 }) => {
-  // UTM tracking function
-  const trackUTMClick = (actionType: string, destination: string) => {
-    if (typeof window !== 'undefined') {
-      const urlParams = new URLSearchParams(window.location.search);
-      const utm_source = urlParams.get('utm_source');
-      const utm_medium = urlParams.get('utm_medium');
-      const utm_campaign = urlParams.get('utm_campaign');
-      const utm_content = urlParams.get('utm_content');
-      const utm_term = urlParams.get('utm_term');
-      
-      // Track the click with UTM parameters
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'cta_click', {
-          event_category: 'CTA',
-          event_label: trackingLabel || destination,
-          action_type: actionType,
-          destination: destination,
-          utm_source: utm_source,
-          utm_medium: utm_medium,
-          utm_campaign: utm_campaign,
-          utm_content: utm_content,
-          utm_term: utm_term,
-          page_path: window.location.pathname
-        });
-      }
-    }
-  };
-
   const handleClick = () => {
     if (href) {
-      trackUTMClick('navigation', href);
+      trackCtaClick({ actionType: 'navigation', destination: href, label: trackingLabel });
     } else if (trackingLabel) {
-      trackUTMClick('action', trackingLabel);
+      trackCtaClick({ actionType: 'action', destination: trackingLabel, label: trackingLabel });
     }
     
     if (onClick) {

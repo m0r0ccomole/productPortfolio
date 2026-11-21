@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Navigation from './Navigation';
 import FreshnessIndicator from './FreshnessIndicator';
 import { GlobalContent } from '../lib/types';
+import { trackCtaClick } from '../lib/analytics';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -99,7 +100,11 @@ const Layout: React.FC<LayoutProps> = ({
                 <Link href="/privacy" className="hover:text-primary-600 transition-colors">
                   {labels['footer-privacy']}
                 </Link>
-                <a href={`mailto:${globalContent.contactEmail}`} className="hover:text-primary-600 transition-colors">
+                <a
+                  href={`mailto:${globalContent.contactEmail}`}
+                  className="hover:text-primary-600 transition-colors"
+                  onClick={() => trackCtaClick({ actionType: 'navigation', destination: `mailto:${globalContent.contactEmail}`, label: 'Footer - Contact' })}
+                >
                   {labels['footer-contact']}
                 </a>
               </div>
