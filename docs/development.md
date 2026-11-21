@@ -23,7 +23,7 @@ npm run lint      # eslint
 
 ## Environment variables
 
-All are optional. Local: copy `.env.example` to `.env.local`. Production: set them in the Netlify dashboard (Site configuration → Environment variables). They are read at build time through `next.config.js` (or the `NEXT_PUBLIC_` prefix).
+All are optional. Local: copy `.env.example` to `.env.local`. Production: set them in the Netlify dashboard (Project configuration → Environment variables; click-by-click in [`setup-guide.md`](setup-guide.md#environment-variables)). They are read at build time through `next.config.js` (or the `NEXT_PUBLIC_` prefix).
 
 | Variable | Purpose | If unset |
 |---|---|---|
@@ -32,7 +32,7 @@ All are optional. Local: copy `.env.example` to `.env.local`. Production: set th
 | `NEXT_PUBLIC_GTM_ID` | Google Tag Manager container (`GTM-XXXXXXX`). Configure GA4 and other tags inside GTM. | GTM not loaded |
 | `MICROSOFT_CLARITY_ID` | Microsoft Clarity project ID | Clarity not loaded |
 
-**CTA click tracking:** `components/FloatingButton.tsx` sends a `cta_click` event (with any `utm_*` params from the current URL) through `window.gtag` when a gtag-based tag is present on the page.
+**CTA click tracking:** `components/FloatingButton.tsx` sends a `cta_click` event (with any `utm_*` params from the current URL) through `window.gtag`, and skips it when that function is undefined. The GTM snippet in `pages/_document.tsx` defines `dataLayer` but not `gtag`, so the event is only sent once something defines `window.gtag`, for example a Custom HTML tag in the GTM container. Steps: [`setup-guide.md`](setup-guide.md#contact-button-clicks).
 
 Never put these values in XML, markdown, or code. They are deployment settings, not content.
 
