@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { motion } from 'motion/react';
 import Layout from '../components/Layout';
 import FloatingButton from '../components/FloatingButton';
+import { trackCtaClick } from '../lib/analytics';
 import { getGlobalContent, getPageContent } from '../lib/contentParser';
 import { GlobalContent, PageContent } from '../lib/types';
 import { fadeUp, fadeUpStagger, slideInLeft, MOTION_DURATION } from '../lib/motion';
@@ -103,6 +104,7 @@ const HelloPage: React.FC<HelloPageProps> = ({ globalContent, pageContent }) => 
                       <motion.a
                         key={linkIndex}
                         href={link.href}
+                        onClick={() => trackCtaClick({ actionType: 'navigation', destination: link.href, label: `Hello - ${link.title}` })}
                         {...slideInLeft()}
                         transition={{ duration: MOTION_DURATION.medium, delay: 0.6 + linkIndex * 0.1 }}
                         className="bg-white rounded-xl shadow-float p-6 floating-element block group hover:shadow-lg transition-all duration-300"

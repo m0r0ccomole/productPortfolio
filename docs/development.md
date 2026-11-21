@@ -32,7 +32,7 @@ All are optional. Local: copy `.env.example` to `.env.local`. Production: set th
 | `NEXT_PUBLIC_GTM_ID` | Google Tag Manager container (`GTM-XXXXXXX`). Configure GA4 and other tags inside GTM. | GTM not loaded |
 | `MICROSOFT_CLARITY_ID` | Microsoft Clarity project ID | Clarity not loaded |
 
-**CTA click tracking:** `components/FloatingButton.tsx` sends a `cta_click` event (with any `utm_*` params from the current URL) through `window.gtag`, and skips it when that function is undefined. The GTM snippet in `pages/_document.tsx` defines `dataLayer` but not `gtag`, so the event is only sent once something defines `window.gtag`, for example a Custom HTML tag in the GTM container. Steps: [`setup-guide.md`](setup-guide.md#contact-button-clicks).
+**CTA click tracking:** `lib/analytics.ts` pushes a `cta_click` event (destination, label, any `utm_*` params from the current URL, and the page path without its query string) to `window.dataLayer`. `components/FloatingButton.tsx`, the footer Contact link in `components/Layout.tsx`, and the link cards on `pages/hello.tsx` call it. The GTM snippet in `pages/_document.tsx` reads `dataLayer`; without a container nothing reads it and the push is harmless. GA4 only receives the event once the container has a Custom Event trigger and a GA4 Event tag for it. Steps: [`setup-guide.md`](setup-guide.md#contact-button-clicks).
 
 Never put these values in XML, markdown, or code. They are deployment settings, not content.
 
