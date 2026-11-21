@@ -127,6 +127,14 @@
         <title>Blog | Riley Carter</title>
         <description>AI prompts, product notes and long-form posts.</description>
       </page>
+      <page id="deep-dives">
+        <title>Work &amp; Impact | Riley Carter</title>
+        <description>Case studies and product briefs from Riley Carter's work in lending, banking and industrial products.</description>
+      </page>
+      <page id="not-found">
+        <title>Page Not Found | Riley Carter</title>
+        <description>This page doesn't exist. Here's where to find Riley Carter's work.</description>
+      </page>
     </seo>
 
     <cta-content>

@@ -94,7 +94,7 @@ Close and reopen the terminal after installing, then run:
 
 ```bash
 git --version     # any recent version
-node --version    # must start with v24
+node --version    # v24 or later
 npm --version
 ```
 
@@ -105,7 +105,7 @@ git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
 ```
 
-**It worked if** all three version commands print a version number and the Node one starts with `v24`.
+**It worked if** all three version commands print a version number and the Node one is `v24` or later.
 
 *No terminal at all?* See the note at the end of [Create your private repo](#create-your-private-repo).
 
@@ -202,7 +202,8 @@ Field-by-field detail for every file is in [`content-authoring.md`](content-auth
 - `about`: greeting, summary, hero image, timeline events, and the "My Approach" and "Beyond Work" sections.
 - `projects`: active projects, then retired projects with a short post-mortem.
 - `privacy`: update the contact email in the last section. Revisit the rest once you decide on analytics; see [Keep the privacy page accurate](#keep-the-privacy-page-accurate).
-- `blog`, `deep-dives`, `not-found`: page labels; adjust wording if you like.
+- `blog` and `deep-dives`: the headings, intro and button text of the blog index and the Work & Impact index, as `<label key="…">` entries inside `<labels>`. Keys are listed in [content-authoring.md](content-authoring.md#about-projects-privacy-and-404-pages).
+- `not-found`: the 404 page heading, message and button text, inside `<not-found>`.
 
 **3. `content/deep-dives.xml`**
 
@@ -226,7 +227,9 @@ Only real quotes, used with the person's permission. `<image>` is optional.
 | About page, timeline | `content/pages.xml` (`page id="about"`) |
 | Projects | `content/pages.xml` (`page id="projects"`) |
 | Privacy policy | `content/pages.xml` (`page id="privacy"`) |
+| Blog index and Work & Impact index headings, intros, buttons | `content/pages.xml` (`page id="blog"`, `page id="deep-dives"`, inside `<labels>`) |
 | 404 page | `content/pages.xml` (`page id="not-found"`) |
+| Small shared interface text ("Read more", section headings, screen-reader labels) | `content/global-elements.xml` (`<ui-labels>`) |
 | Industry landing pages, `/hello` | `content/industry-pages.xml` |
 | Case studies, product briefs | `content/deep-dives.xml` |
 | Testimonials | `content/testimonials.xml` |
@@ -679,6 +682,7 @@ Content:
 
 - [ ] No Riley Carter text left: `grep -ri "riley\|example.com" content/` prints nothing
 - [ ] No sample image paths left: `grep -r "/sample/" content/` prints nothing
+- [ ] Sample blog posts you don't want are deleted from `content/blog-markdown/`, including `draft-example.md`, which is unlisted but still reachable by link
 - [ ] Every number on the site is one you can defend in an interview
 - [ ] Every testimonial is real and approved by the person quoted
 - [ ] `npm run build` passes with no warnings about missing content

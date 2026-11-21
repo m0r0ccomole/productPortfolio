@@ -34,7 +34,7 @@ After any content change, the build regenerates static pages. See [`development.
 | `<scheduling-url>` | no | Calendar booking link. Omit it and calendar buttons disappear. |
 | `<credit href="…">` | no | Footer link to the template project, e.g. `Built with productPortfolio`. Omit it to hide the link. |
 | `<global-images>` | no | `<headshot>`, `<headshot-alt>`, `<favicon>`, `<og-image>` (social share image, ideally 1200×630). Omitted images are simply not rendered. |
-| `<seo>` | recommended | `<default-description>`, `<default-keywords>`, and one `<page id="…">` per static page with `<title>` and `<description>`. Page ids: `about`, `projects`, `hello`, `privacy`, `blog`, `not-found`. A page without an entry uses the site title and default description. |
+| `<seo>` | recommended | `<default-description>`, `<default-keywords>`, and one `<page id="…">` per static page with `<title>` and `<description>`. Page ids: `about`, `projects`, `hello`, `privacy`, `blog`, `deep-dives`, `not-found`. A page without an entry uses the site title and default description. |
 | `<navigation>`, `<buttons>`, `<cta-content>` | yes | Nav links and CTA copy |
 | `<ui-labels>` | no | Small UI labels shared across pages, one `<label key="…">` per label. See below. |
 

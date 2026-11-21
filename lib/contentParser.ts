@@ -1057,7 +1057,8 @@ async function scanBlogMarkdownFiles(): Promise<BlogPost[]> {
         date: data.date,
         category: data.category,
         excerpt: data.excerpt,
-        listed
+        listed,
+        sourceFile: filename
       };
       
       blogPosts.push(blogPost);
@@ -1093,7 +1094,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
 
   // Load and process the markdown content
   try {
-    const markdownPath = contentPath('blog-markdown', `${slug}.md`);
+    const markdownPath = contentPath('blog-markdown', post.sourceFile ?? `${slug}.md`);
     const markdownContent = await fs.readFile(markdownPath, 'utf8');
     
     const processed = await processMarkdown(markdownContent);

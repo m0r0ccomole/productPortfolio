@@ -21,10 +21,10 @@ Next.js 16 (static export) · React 19 · TypeScript · Tailwind CSS 4 · Motion
    ```
 
    No terminal? Use the **Use this template** button instead.
-2. **Connect Netlify.** Import the repo; `netlify.toml` already has the build settings.
-3. **Copy the sample:** `cp -r sample/content content`
-4. **Make it yours.** Edit the XML and markdown in `content/`, add your images under `public/images/`, and recolor in `content/theme.js`.
-5. **Push.** Netlify builds and deploys.
+2. **Copy the sample:** `cp -r sample/content content`
+3. **Make it yours.** Edit the XML and markdown in `content/`, add your images under `public/images/`, and recolor in `content/theme.js`.
+4. **Push:** `git add -A && git commit -m "My content" && git push`
+5. **Connect Netlify.** Import the repo; `netlify.toml` already has the build settings. It builds and deploys every push to `main`.
 
 To run it locally: `npm install`, then `npm run dev` and open http://localhost:3000.
 

@@ -26,7 +26,10 @@ const HelloPage: React.FC<HelloPageProps> = ({ globalContent, pageContent }) => 
   // router.isReady flips, so the first render matches the static HTML.
   const router = useRouter();
   const nameParam = router.isReady ? router.query.name : undefined;
-  const firstName = typeof nameParam === 'string' ? nameParam : '';
+  // Only a plausible first name is greeted; anything else gets the generic
+  // greeting, so a crafted link can't put arbitrary text in the headline.
+  const rawName = typeof nameParam === 'string' ? nameParam.trim() : '';
+  const firstName = /^[\p{L}\p{M}' .-]{1,30}$/u.test(rawName) ? rawName : '';
   const labels = globalContent.uiLabels;
 
   // Handle null pageContent
