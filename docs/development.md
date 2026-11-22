@@ -28,11 +28,15 @@ All are optional. Local: copy `.env.example` to `.env.local`. Production: set th
 | Variable | Purpose | If unset |
 |---|---|---|
 | `SITE_URL` | Canonical base URL for social share tags | Uses `<site-url>` from `content/global-elements.xml` |
-| `LAST_UPDATED` | Footer freshness date, `YYYY-MM-DD` | The build date |
+| `LAST_UPDATED` | Footer freshness date and privacy page "Last updated" date, `YYYY-MM-DD` | The build date |
 | `NEXT_PUBLIC_GTM_ID` | Google Tag Manager container (`GTM-XXXXXXX`). Configure GA4 and other tags inside GTM. | GTM not loaded |
 | `MICROSOFT_CLARITY_ID` | Microsoft Clarity project ID | Clarity not loaded |
 
 **CTA click tracking:** `lib/analytics.ts` pushes a `cta_click` event (destination, label, any `utm_*` params from the current URL, and the page path without its query string) to `window.dataLayer`. `components/FloatingButton.tsx`, the footer Contact link in `components/Layout.tsx`, and the link cards on `pages/hello.tsx` call it. The GTM snippet in `pages/_document.tsx` reads `dataLayer`; without a container nothing reads it and the push is harmless. GA4 only receives the event once the container has a Custom Event trigger and a GA4 Event tag for it. Steps: [`setup-guide.md`](setup-guide.md#contact-button-clicks).
+
+**Consent and Global Privacy Control:** before the GTM snippet, `pages/_document.tsx` sets Google consent mode defaults: `analytics_storage` denied for the EEA, UK and Switzerland (`CONSENT_REGIONS`) and granted elsewhere; `ad_storage`, `ad_user_data` and `ad_personalization` denied everywhere. Google tags in GTM have built-in consent checks, so no container setting is needed. When `navigator.globalPrivacyControl` is true, neither GTM (`_document.tsx`) nor Clarity (`components/Layout.tsx`) loads. The noscript GTM iframe can't check GPC and still renders for visitors without JavaScript.
+
+`LAST_UPDATED` also drives the "Last updated" date on the privacy page.
 
 Never put these values in XML, markdown, or code. They are deployment settings, not content.
 
