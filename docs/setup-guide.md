@@ -577,7 +577,7 @@ The goal is a Clarity project and its project ID.
 
 **It worked if**, after you browse a few pages of the live site with no ad blocker, the Clarity dashboard shows a live user. Recordings of finished visits follow shortly after. You can also **View page source** on the live site and search for `clarity.ms/tag/` followed by your ID.
 
-Two things to know. Clarity records what visitors do on the page, with content it considers sensitive masked by default. And for visitors from the EEA, the UK and Switzerland, Clarity limits what it collects unless the site sends it a consent signal. This site has no consent banner, so expect partial data from those regions.
+Two things to know. Clarity records what visitors do on the page, with content it considers sensitive masked by default. And for visitors from the EEA, the UK and Switzerland, Clarity sets no cookies unless the site sends it a consent signal. This site has no consent banner, so expect partial data from those regions.
 
 ### What to look at
 
@@ -633,7 +633,14 @@ The sample privacy text in `content/pages.xml` (`page id="privacy"`) describes b
 - **`/hello?name=` links:** the first name in the link is part of the page address, so it is recorded by GA4 and Clarity along with the visit. If you use named links, say so, or do not combine them with analytics.
 - **No analytics:** remove the analytics and cookie sections.
 
-The site has no cookie consent banner. If you expect visitors from places that require consent before analytics cookies are set, such as the EU and the UK, find out what applies to you before turning analytics on. This guide is not legal advice.
+Two things the site does on its own, which your privacy page can state:
+
+- **Visitors from the EEA, the UK and Switzerland:** analytics cookies are off by default. The site sets Google's consent mode to "denied" for those regions before Tag Manager loads, and the GA4 tag respects it with no setting on your side. GA4 then sends cookieless pings for those visitors, which Google uses to estimate their numbers. Clarity sets no cookies for those regions on its own.
+- **Global Privacy Control:** when a visitor's browser sends this signal (Firefox, Brave and DuckDuckGo support it), neither Tag Manager nor Clarity loads at all.
+
+The site has no consent banner, so EEA, UK and Swiss visitors can't opt in. If you need more than these defaults, find out what applies to you. This guide is not legal advice.
+
+The "Last updated" date on the privacy page is the same date as the footer: the build date, or `LAST_UPDATED` if you set it. If your privacy text refers to that date as its effective date, set `LAST_UPDATED` in Netlify to the day you last changed the policy, or accept that every deploy moves it.
 
 ## Resume and email signature links
 

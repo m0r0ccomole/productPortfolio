@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatIsoDate } from '../lib/formatDate';
 
 interface FreshnessIndicatorProps {
   label: string; // ui-labels "last-updated"
@@ -23,28 +24,10 @@ const FreshnessIndicator: React.FC<FreshnessIndicatorProps> = ({
     }
   };
 
-  const formatDate = (dateString: string) => {
-    // Parse YYYY-MM-DD as a local date; new Date('YYYY-MM-DD') is UTC midnight,
-    // which renders as the previous day in US time zones
-    const [y, m, d] = dateString.split('-').map(Number);
-    const date = new Date(y, m - 1, d);
-    // Use toDateString() instead of toLocaleDateString() to avoid hydration issues
-    // toDateString() is consistent between server and client
-    const formatted = date.toDateString();
-    // Convert "Mon Jan 01 2024" to "January 1, 2024" format
-    const parts = formatted.split(' ');
-    const months = {
-      'Jan': 'January', 'Feb': 'February', 'Mar': 'March', 'Apr': 'April',
-      'May': 'May', 'Jun': 'June', 'Jul': 'July', 'Aug': 'August',
-      'Sep': 'September', 'Oct': 'October', 'Nov': 'November', 'Dec': 'December'
-    };
-    return `${months[parts[1] as keyof typeof months]} ${parseInt(parts[2])}, ${parts[3]}`;
-  };
-
   return (
     <div className="flex items-center space-x-2 text-sm text-gray-600">
       <div className={`w-2 h-2 rounded-full ${getStatusColor(lastUpdated)}`} />
-      <span>{label} {formatDate(lastUpdated)}</span>
+      <span>{label} {formatIsoDate(lastUpdated)}</span>
     </div>
   );
 };

@@ -54,7 +54,7 @@ Every key is optional. If your `content/global-elements.xml` has no `<ui-labels>
 | `skip-link` | Keyboard "skip to content" link at the top of every page | |
 | `footer-privacy`, `footer-contact` | Footer links | |
 | `footer-rights` | Text after the copyright line in the footer | |
-| `last-updated` | Prefix before the date in the footer and on the privacy page | |
+| `last-updated` | Prefix before the date in the footer and on the privacy page. Both show the build date, or `LAST_UPDATED` if set | |
 | `nav-toggle-menu` | Screen-reader label of the mobile menu button | |
 | `headshot-alt`, `headshot-placeholder` | Headshot alt text when `<headshot-alt>` is not set | |
 | `hero-image-alt` | About page hero alt text when `<hero-image-alt>` is not set | |

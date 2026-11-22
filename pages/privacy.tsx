@@ -11,6 +11,7 @@ import Layout from '../components/Layout';
 import { getGlobalContent, getPageContent } from '../lib/contentParser';
 import { GlobalContent, PageContent } from '../lib/types';
 import { fadeUp, fadeUpStagger } from '../lib/motion';
+import { formatIsoDate } from '../lib/formatDate';
 
 interface PrivacyPageProps {
   globalContent: GlobalContent;
@@ -41,7 +42,7 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ globalContent, pageContent })
               {...fadeUpStagger(1)}
               className="text-lg text-gray-600"
             >
-              {globalContent.uiLabels['last-updated']} {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              {globalContent.uiLabels['last-updated']} {formatIsoDate(process.env.LAST_UPDATED as string)}
             </motion.p>
           </div>
         </section>
